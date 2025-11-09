@@ -1,0 +1,355 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    background-color: #f8fff8;
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: #2e7d32;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 30px;
+    align-items: center;
+}
+
+.navbar .logo-container{
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.navbar .nav-logo{
+    height: 40px;
+    border-radius: 50%;
+}
+
+.navbar .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.nav-links a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.nav-links a::after{
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+}
+
+.nav-links a:hover{
+    color: white;
+    transform: translateY(-3px);
+    text-shadow: 0 0 10px white;
+}
+
+.nav-links a:hover::after{
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.hero-section {
+    background-image: url(Images/f6.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    position: relative;
+}
+
+.hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.hero-content p {
+    font-size: 1.2em;
+    margin-bottom: 45px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.shop-now-btn {
+    background-color: #388e3c;
+    color: white;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    position: relative;
+    bottom: -20px;
+}
+
+.shop-now-btn:hover {
+    background-color: #2e7d32;
+}
+
+/* Main Content Styles */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.category-section {
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 40px;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.category-section h2 {
+    font-size: 2em;
+    color: #2e7d32;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e0f2e9;
+    padding-bottom: 5px;
+}
+
+.product-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+}
+
+.product-card {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    min-width: 200px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+}
+
+.product-card:hover {
+    transform: scale(1.03);
+}
+
+.product-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.product-card h3 {
+    margin-bottom: 5px;
+}
+
+.product-card .price {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #2e7d32;
+    margin-bottom: 15px;
+}
+
+.product-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.add-to-cart-btn {
+    background-color: #388e3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #2e7d32;
+    transform: translateY(-1px);
+}
+
+.quantity-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 35px;
+}
+
+.qty-btn {
+    background-color: #e0ffe0;
+    color: #2e7d32;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    width: 35px;
+    height: 100%;
+    transition: background-color 0.2s ease;
+}
+
+.qty-btn:hover {
+    background-color: #c8e6c9;
+}
+
+.qty-value {
+    padding: 0 10px;
+    font-weight: 600;
+    width: 30px;
+    text-align: center;
+    color: #333;
+    font-size: 1em;
+}
+
+.footer {
+    background-color: #2e7d32;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+}
+
+/* --- CONTACT US SECTION STYLING (Bright Green & White Theme) --- */
+
+.contact-us-container {
+    padding: 60px 70px;
+    max-width: 1000px;
+    margin: 60px auto;
+    background-color: #ffffff; /* Pure White */
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.15); /* Greenish soft shadow */
+}
+
+.contact-us-container h2 {
+    font-size: 2.5em; 
+    color: #4CAF50; /* Vibrant Green */
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #4CAF50;
+    padding-bottom: 10px;
+    font-weight: 700;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 50px;
+    margin-top: 40px;
+}
+
+.contact-info h3 {
+    color: #388E3C; /* Darker Green for better contrast */
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.contact-info p {
+    line-height: 1.8;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.highlight-link {
+    color: #AEEA00; /* Zesty Lime Accent */
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 2px dotted #AEEA00;
+    transition: color 0.3s;
+}
+.highlight-link:hover {
+    color: #4CAF50; /* Hover to Vibrant Green */
+}
+
+/* Form Styling */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    background-color: #f9fff9; /* Very light green background for form */
+    border: 1px solid #e0ffe0;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.contact-form h3 {
+    color: #4CAF50;
+    margin-bottom: 25px;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    font-size: 1em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.submit-button {
+    background-color: #AEEA00; /* Zesty Lime Button */
+    color: #333;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 700;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 4px 6px rgba(174, 234, 0, 0.4); /* Button shadow */
+}
+
+.submit-button:hover {
+    background-color: #4CAF50; /* Hover to Vibrant Green */
+    color: white;
+}

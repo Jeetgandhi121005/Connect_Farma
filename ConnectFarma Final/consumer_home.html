@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumer Home</title>
+    <link rel="stylesheet" href="consumer_home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    
+
+    <style>
+        /* --- NEW CSS for Floating Common Cart Summary --- */
+        .floating-cart-summary {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #f7f7f7;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000; /* Ensure it stays on top */
+            width: 250px;
+            text-align: center;
+        }
+        
+        .floating-cart-summary h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 18px;
+        }
+
+        #cart-item-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #review-checkout-btn {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        #review-checkout-btn:hover {
+            background-color: #45a049;
+        }
+        
+        /* Ensure product controls are centered/organized now that the extra buttons are gone */
+        .product-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .quantity-control {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .qty-btn {
+            padding: 5px 10px;
+        }
+
+        .qty-value {
+            padding: 5px 15px;
+            border: 1px solid #ccc;
+            min-width: 20px;
+            text-align: center;
+            margin: 0 5px;
+        }
+
+    </style>
+    
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="intro.png" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">ConnectFrama</span>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Home</a>
+            <a href="about_us.html">About Us</a>
+            <a href="cart.html">Cart</a>
+            <a href="#contact-us-section" class="scroll-link">Contact Us</a>
+            <a href="reviews.html">Reviews</a>
+            <a href="index.html">Logout</a>
+        </nav> 
+
+    </header>
+
+ <marquee behavior="scroll" direction="left" 
+style="background:#ffefc1; color:#090908; padding:10px; 
+font-weight:bold; font-size:18px; border:1px solid #ccc;">
+   Welcome to ConnectFarma
+</marquee> 
+
+    <main class="hero-section">
+        <div class="hero-content">
+            <h1>Connecting Farms to Your Family</h1>
+            <p style="font-family: 'Roboto Slab', serif; margin-bottom: 20px;">Straight from the Farm, Straight to your Home.</p>
+            <a href="#" class="shop-now-btn">Shop Now</a>
+        </div>
+    </main>
+    
+
+    <main class="main-content">
+        
+        <section class="category-section" data-category="Vegetables">
+            <h2>Vegetables</h2>
+            <div class="product-grid">
+                
+                <div class="product-card" data-name="Tomatoes" data-price="30" data-unit="kg">
+                    <img src="Products/vegetables/tomatoes.jpg" alt="Tomatoes">
+                    <h3>Tomatoes</h3>
+                    <p class="price">₹30/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Onions" data-price="25" data-unit="kg">
+                    <img src="Products/vegetables/onions.jpg" alt="Onions">
+                    <h3>Onions</h3>
+                    <p class="price">₹25/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Potatoes" data-price="20" data-unit="kg">
+                    <img src="Products/vegetables/potatoes.jpg" alt="Potatoes">
+                    <h3>Potatoes</h3>
+                    <p class="price">₹20/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Cabbage" data-price="15" data-unit="piece">
+                    <img src="Products/vegetables/cabbage.jpg" alt="Cabbage">
+                    <h3>Cabbage</h3>
+                    <p class="price">₹15/piece</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Spinach" data-price="10" data-unit="bunch">
+                    <img src="Products/vegetables/spinach.jpg" alt="Spinach">
+                    <h3>Spinach</h3>
+                    <p class="price">₹10/bunch</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Carrots" data-price="35" data-unit="kg">
+                    <img src="Products/vegetables/carrots.jpg" alt="Carrots">
+                    <h3>Carrots</h3>
+                    <p class="price">₹35/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Capsicum" data-price="50" data-unit="kg">
+                    <img src="Products/vegetables/capsicum.jpg" alt="Capsicum">
+                    <h3>Capsicum</h3>
+                    <p class="price">₹50/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Cauliflower" data-price="25" data-unit="piece">
+                    <img src="Products/vegetables/cauliflower.jpg" alt="Cauliflower">
+                    <h3>Cauliflower</h3>
+                    <p class="price">₹25/piece</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Broccoli" data-price="70" data-unit="piece">
+                    <img src="Products/vegetables/broccoli.jpg" alt="Broccoli">
+                    <h3>Broccoli</h3>
+                    <p class="price">₹70/piece</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Cucumber" data-price="20" data-unit="kg">
+                    <img src="Products/vegetables/cucumber.jpg" alt="Cucumber">
+                    <h3>Cucumber</h3>
+                    <p class="price">₹20/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Brinjal" data-price="30" data-unit="kg">
+                    <img src="Products/vegetables/brinjal.jpg" alt="Brinjal">
+                    <h3>Brinjal</h3>
+                    <p class="price">₹30/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Garlic" data-price="120" data-unit="kg">
+                    <img src="Products/vegetables/garlic.jpg" alt="Garlic">
+                    <h3>Garlic</h3>
+                    <p class="price">₹120/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Ginger" data-price="80" data-unit="kg">
+                    <img src="Products/vegetables/ginger.jpg" alt="Ginger">
+                    <h3>Ginger</h3>
+                    <p class="price">₹80/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Green Chilli" data-price="40" data-unit="kg">
+                    <img src="Products/vegetables/green_chilli.jpg" alt="Green Chilli">
+                    <h3>Green Chilli</h3>
+                    <p class="price">₹40/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Lemon" data-price="50" data-unit="dozen">
+                    <img src="Products/vegetables/lemon.jpg" alt="Lemon">
+                    <h3>Lemon</h3>
+                    <p class="price">₹50/dozen</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="category-section" data-category="Fruits">
+            <h2>Fruits</h2>
+            <div class="product-grid">
+                
+                <div class="product-card" data-name="Bananas" data-price="50" data-unit="dozen">
+                    <img src="Products/fruits/bananas.jpg" alt="Bananas">
+                    <h3>Bananas</h3>
+                    <p class="price">₹50/dozen</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Apples" data-price="150" data-unit="kg">
+                    <img src="Products/fruits/apples.jpg" alt="Apples">
+                    <h3>Apples</h3>
+                    <p class="price">₹150/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Grapes" data-price="80" data-unit="kg">
+                    <img src="Products/fruits/grapes.jpg" alt="Grapes">
+                    <h3>Grapes</h3>
+                    <p class="price">₹80/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Mangoes" data-price="120" data-unit="kg">
+                    <img src="Products/fruits/mangoes.jpg" alt="Mangoes">
+                    <h3>Mangoes</h3>
+                    <p class="price">₹120/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Oranges" data-price="60" data-unit="kg">
+                    <img src="Products/fruits/oranges.jpg" alt="Oranges">
+                    <h3>Oranges</h3>
+                    <p class="price">₹60/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Pineapple" data-price="75" data-unit="piece">
+                    <img src="Products/fruits/pineapple.jpg" alt="Pineapple">
+                    <h3>Pineapple</h3>
+                    <p class="price">₹75/piece</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Pomegranate" data-price="180" data-unit="kg">
+                    <img src="Products/fruits/pomegranate.jpg" alt="Pomegranate">
+                    <h3>Pomegranate</h3>
+                    <p class="price">₹180/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Kiwi" data-price="90" data-unit="pack">
+                    <img src="Products/fruits/kiwi.jpg" alt="Kiwi">
+                    <h3>Kiwi</h3>
+                    <p class="price">₹90/pack (3 Pcs)</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Papaya" data-price="40" data-unit="kg">
+                    <img src="Products/fruits/papaya.jpg" alt="Papaya">
+                    <h3>Papaya</h3>
+                    <p class="price">₹40/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Watermelon" data-price="25" data-unit="kg">
+                    <img src="Products/fruits/watermelon.jpg" alt="Watermelon">
+                    <h3>Watermelon</h3>
+                    <p class="price">₹25/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Coconut" data-price="50" data-unit="kg">
+                    <img src="Products/fruits/coconut.jpg" alt="Coconut">
+                    <h3>Coconut</h3>
+                    <p class="price">₹50/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="product-card" data-name="Muskmelon" data-price="30" data-unit="kg">
+                    <img src="Products/fruits/muskmelon.jpg" alt="Muskmelon">
+                    <h3>Muskmelon</h3>
+                    <p class="price">₹30/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Strawberry" data-price="200" data-unit="box">
+                    <img src="Products/fruits/strawberry.jpg" alt="Strawberry">
+                    <h3>Strawberry</h3>
+                    <p class="price">₹200/box</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Litchi" data-price="100" data-unit="kg">
+                    <img src="Products/fruits/litchi.jpg" alt="Litchi">
+                    <h3>Litchi</h3>
+                    <p class="price">₹100/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Cherries" data-price="130" data-unit="kg">
+                    <img src="Products/fruits/cherries.jpg" alt="Cherries">
+                    <h3>Cherries</h3>
+                    <p class="price">₹130/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-section" data-category="Dairy">
+            <h2>Dairy</h2>
+            <div class="product-grid">
+                
+                <div class="product-card" data-name="Milk" data-price="25" data-unit="litre">
+                    <img src="Products/dairy/milk.jpg" alt="Milk">
+                    <h3>Milk</h3>
+                    <p class="price">₹25/litre</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Paneer" data-price="100" data-unit="250g">
+                    <img src="Products/dairy/paneer.jpg" alt="Paneer">
+                    <h3>Paneer</h3>
+                    <p class="price">₹100/250g</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Ghee" data-price="550" data-unit="litre">
+                    <img src="Products/dairy/ghee.jpg" alt="Ghee">
+                    <h3>Ghee</h3>
+                    <p class="price">₹550/litre</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Curd" data-price="40" data-unit="cup">
+                    <img src="Products/dairy/curd.jpg" alt="Curd">
+                    <h3>Curd (Dahi)</h3>
+                    <p class="price">₹40/cup (400g)</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Butter" data-price="60" data-unit="100g">
+                    <img src="Products/dairy/butter.jpg" alt="Butter">
+                    <h3>Butter</h3>
+                    <p class="price">₹60/100g</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Cheese" data-price="120" data-unit="100g">
+                    <img src="Products/dairy/cheese slice.jpg" alt="Cheese">
+                    <h3>Cheese Slice</h3>
+                    <p class="price">₹120/100g</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Cream" data-price="80" data-unit="200ml">
+                    <img src="Products/dairy/cream.jpg" alt="Cream">
+                    <h3>Fresh Cream</h3>
+                    <p class="price">₹80/200ml</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Lassi" data-price="50" data-unit="500ml">
+                    <img src="Products/dairy/lassi.jpg" alt="Lassi">
+                    <h3>Lassi</h3>
+                    <p class="price">₹50/500ml</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Chaas" data-price="20" data-unit="200ml">
+                    <img src="Products/dairy/buttermilk.jpg" alt="Chaas">
+                    <h3>Chaas (Buttermilk)</h3>
+                    <p class="price">₹20/200ml</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Bread" data-price="40" data-unit="400g">
+                    <img src="Products/dairy/bread.jpg" alt="Bread">
+                    <h3>Bread</h3>
+                    <p class="price">₹40/400g</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Cheese Spread" data-price="70" data-unit="200g">
+                    <img src="Products/dairy/cheese spread.jpg" alt="Cheese Spread">
+                    <h3>Cheese Spread</h3>
+                    <p class="price">₹70/200g</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Diced Cheese" data-price="120" data-unit="200g">
+                    <img src="Products/dairy/diced cheese.jpg" alt="Diced Cheese">
+                    <h3>Diced Cheese</h3>
+                    <p class="price">₹120/200g</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Condensed Milk" data-price="90" data-unit="tin">
+                    <img src="Products/dairy/condensed milk.jpg" alt="Condensed Milk">
+                    <h3>Condensed Milk</h3>
+                    <p class="price">₹90/Tin (180g)</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Ice Cream" data-price="170" data-unit="litre">
+                    <img src="Products/dairy/ice cream.jpg" alt="Ice Cream">
+                    <h3>Ice Cream</h3>
+                    <p class="price">₹170/litre</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Flavored Milk" data-price="150" data-unit="200ml">
+                    <img src="Products/dairy/flavoured milk.jpg" alt="Flavored Milk">
+                    <h3>Flavored Milk (Pack of 5)</h3>
+                    <p class="price">₹150/200ml</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-section" data-category="Grains">
+            <h2>Grains & Pulses</h2>
+            <div class="product-grid">
+                
+                <div class="product-card" data-name="Wheat" data-price="40" data-unit="kg">
+                    <img src="Products/grains/wheat.jpg" alt="Wheat">
+                    <h3>Wheat (Gehu)</h3>
+                    <p class="price">₹40/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Rice" data-price="60" data-unit="kg">
+                    <img src="Products/grains/rice.jpg" alt="Rice">
+                    <h3>Basmati Rice</h3>
+                    <p class="price">₹60/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Toor Dal" data-price="120" data-unit="kg">
+                    <img src="Products/grains/arhar.jpg" alt="Toor Dal">
+                    <h3>Toor Dal (Arhar)</h3>
+                    <p class="price">₹120/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Moong Dal" data-price="90" data-unit="kg">
+                    <img src="Products/grains/moong (yellow).jpg" alt="Moong Dal">
+                    <h3>Moong Dal (Yellow)</h3>
+                    <p class="price">₹90/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Urad Dal" data-price="110" data-unit="kg">
+                    <img src="Products/grains/split.jpg" alt="Urad Dal">
+                    <h3>Urad Dal (Split)</h3>
+                    <p class="price">₹110/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Chana Dal" data-price="85" data-unit="kg">
+                    <img src="Products/grains/chana dal.jpg" alt="Chana Dal">
+                    <h3>Chana Dal</h3>
+                    <p class="price">₹85/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Kidney Beans" data-price="130" data-unit="kg">
+                    <img src="Products/grains/kidneybeans.jpg" alt="Kidney Beans">
+                    <h3>Kidney Beans (Rajma)</h3>
+                    <p class="price">₹130/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Chickpeas" data-price="105" data-unit="kg">
+                    <img src="Products/grains/chickpeas.jpg" alt="Chickpeas">
+                    <h3>Chickpeas (Chhole)</h3>
+                    <p class="price">₹105/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-name="Oats" data-price="150" data-unit="box">
+                    <img src="Products/grains/oats.jpg" alt="Oats">
+                    <h3>Oats</h3>
+                    <p class="price">₹150/Box (500g)</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Barley" data-price="90" data-unit="kg">
+                    <img src="Products/grains/barley.jpg" alt="Barley">
+                    <h3>Barley</h3>
+                    <p class="price">₹90/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Rye" data-price="45" data-unit="kg">
+                    <img src="Products/grains/rye.jpg" alt="Rye">
+                    <h3>Rye</h3>
+                    <p class="price">₹45/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Teff" data-price="55" data-unit="kg">
+                    <img src="Products/grains/teff.jpg" alt="Teff">
+                    <h3>Teff</h3>
+                    <p class="price">₹55/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Jowar" data-price="35" data-unit="kg">
+                    <img src="Products/grains/sorghum.jpg" alt="Jowar">
+                    <h3>Sorghum (Jowar)</h3>
+                    <p class="price">₹35/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Bajra" data-price="30" data-unit="kg">
+                    <img src="Products/grains/millet.jpg" alt="Bajra">
+                    <h3>Millet (Bajra)</h3>
+                    <p class="price">₹30/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-name="Buckwheat Dal" data-price="100" data-unit="kg">
+                    <img src="Products/grains/buckwheat.jpg" alt="Buckwheat Dal">
+                    <h3>Buckwheat</h3>
+                    <p class="price">₹100/kg</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus">-</button>
+                            <span class="qty-value">0</span>
+                            <button class="qty-btn plus">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="floating-cart-summary">
+        <h3>Your Cart</h3>
+        <span id="cart-item-count">0 items selected</span>
+        <button id="review-checkout-btn">Review & Checkout</button>
+    </div>
+    
+    <div id="contact-us-section" class="contact-us-container animate-on-scroll fade-up">
+        <h2 class="animate-on-scroll slide-left">Get In Touch</h2>
+        <p class="animate-on-scroll fade-up" style="text-align: center; font-size: 1.2em; color: #555; margin-bottom: 40px;">Have questions or feedback? We'd love to hear from you!</p>
+
+        <div class="contact-grid">
+            <div class="contact-info animate-on-scroll fade-up">
+                <h3>Our Details</h3>
+                <p><strong>Email:</strong> <a href="mailto:support@connectframa.com" class="highlight-link">support@connectframa.com</a></p>
+                <p><strong>Phone:</strong> +91 98765 43210</p>
+                <p><strong>Head Office:</strong> Orchid Business Center, 7th Floor Tower A, GIFT City, Gandhinagar, Gujarat 382355 India</p>
+            </div>
+        
+            <form class="contact-form animate-on-scroll slide-left">
+                <h3>Send Us a Message</h3>
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="Your Message" rows="4" required></textarea>
+                <button type="submit" class="submit-button">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="contact-us-section" class="contact-us-container animate-on-scroll fade-up"></div>
+
+    <footer class="footer">
+        © 2025 ConnectFrama. All rights reserved.
+    </footer>
+    
+    <script src="smooth_scroll_animate.js"></script>
+    
+    <script>
+        // --- CART SIMULATION LOGIC USING LOCAL STORAGE ---
+        let cartItems = JSON.parse(localStorage.getItem('connectFramaCart')) || [];
+        const checkoutButton = document.getElementById('review-checkout-btn');
+        const itemCountSpan = document.getElementById('cart-item-count');
+
+        function updateLocalStorage() {
+            localStorage.setItem('connectFramaCart', JSON.stringify(cartItems));
+        }
+
+        // Function to update the floating cart summary display
+        function updateCartSummary(count) {
+            itemCountSpan.textContent = `${count} item${count !== 1 ? 's' : ''} selected`;
+            
+            if (count > 0) {
+                checkoutButton.style.backgroundColor = '#4CAF50';
+                checkoutButton.textContent = `Review & Checkout (${count} items)`;
+            } else {
+                checkoutButton.style.backgroundColor = '#6c757d'; // Grey when no items selected
+                checkoutButton.textContent = 'Review & Checkout';
+            }
+        }
+        
+        // --- CORE LOGIC: Scan all items and update cart on Checkout click ---
+        checkoutButton.addEventListener('click', function() {
+            const allProductCards = document.querySelectorAll('.product-card');
+            let newCart = [];
+            let totalItemsCount = 0;
+
+            allProductCards.forEach(card => {
+                const quantity = parseInt(card.querySelector('.qty-value').textContent);
+                
+                if (quantity > 0) {
+                    const productName = card.dataset.name;
+                    const productPrice = parseFloat(card.dataset.price);
+                    const productUnit = card.dataset.unit;
+                    
+                    // *** IMAGE PROPERTY IS NOW REMOVED. Only essential data is saved. ***
+                    newCart.push({ 
+                        name: productName, 
+                        price: productPrice, 
+                        quantity: quantity,
+                        unit: productUnit
+                        // 'image' property is intentionally omitted here
+                    });
+                    totalItemsCount++;
+                }
+            });
+
+            // Replace the old cart with the new selections
+            cartItems = newCart;
+            updateLocalStorage();
+            updateCartSummary(totalItemsCount);
+
+            if (totalItemsCount > 0) {
+                alert(`Successfully added ${totalItemsCount} unique items in your cart! Redirecting to Cart...`);
+                // Redirect to cart page after updating
+                window.location.href = 'cart.html'; 
+            } else {
+                alert("Your shopping cart is empty. Please select some items before checking out.");
+            }
+        });
+
+        // Quantity control logic (only updates the display quantity)
+        document.querySelectorAll('.qty-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.product-card');
+                const valueSpan = card.querySelector('.qty-value');
+                let value = parseInt(valueSpan.textContent);
+
+                if (this.classList.contains('plus')) {
+                    value++;
+                } else if (this.classList.contains('minus') && value > 0) {
+                    value--; 
+                }
+                valueSpan.textContent = value;
+                
+                // Recalculate summary live on every quantity change
+                updateLiveCartSummary();
+            });
+        });
+
+        // Function to set quantity from local storage on page load
+        function initializeQuantities() {
+            const allProductCards = document.querySelectorAll('.product-card');
+            let initialCount = 0;
+
+            allProductCards.forEach(card => {
+                const productName = card.dataset.name;
+                const qtyValueSpan = card.querySelector('.qty-value');
+                
+                const cartItem = cartItems.find(item => item.name === productName);
+                
+                if (cartItem) {
+                    qtyValueSpan.textContent = cartItem.quantity;
+                    initialCount++;
+                } else {
+                    qtyValueSpan.textContent = 0;
+                }
+            });
+            updateCartSummary(initialCount);
+        }
+        
+        // Function to update the summary based on current page selections (live count)
+        function updateLiveCartSummary() {
+            let liveCount = 0;
+            document.querySelectorAll('.product-card').forEach(card => {
+                const quantity = parseInt(card.querySelector('.qty-value').textContent);
+                if (quantity > 0) {
+                    liveCount++;
+                }
+            });
+            updateCartSummary(liveCount);
+        }
+
+        // Run initialization when the page loads
+        document.addEventListener('DOMContentLoaded', initializeQuantities);
+
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Step 1: Smooth scroll for Contact Us link
+            const contactLink = document.querySelector('.scroll-link[href="#contact-us-section"]');
+            
+            if (contactLink) {
+                contactLink.addEventListener('click', function(e) {
+                    e.preventDefault(); // Default jump ko rokna
+
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - document.querySelector('.navbar').offsetHeight,
+                            behavior: 'smooth' // Yeh property slide effect deti hai
+                        });
+                    }
+                });
+            }
+            
+            // --- Scroll Animation Logic (Optional, agar pehle se nahi hai) ---
+            const observerOptions = {
+                root: null, 
+                rootMargin: '0px',
+                threshold: 0.1 
+            };
+
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    } else {
+                        entry.target.classList.remove('show');
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+            const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
+            elementsToAnimate.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>

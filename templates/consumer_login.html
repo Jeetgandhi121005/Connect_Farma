@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consumer Login</title>
+  <link rel="stylesheet" href="{% static 'form.css' %}">
+  <link rel ="shortcut icon" href="{% static 'shortcut.jpeg'%}" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  {% if messages %} 
+      <div style="padding: 10px; background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; margin-bottom: 15px; border-radius: 5px;">
+          {% for message in messages %}
+              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+          {% endfor %}
+      </div>
+  {% endif %}
+<form class="login-form" id="consumerForm" method="POST" action="{% url 'consumer_login' %}">
+    {% csrf_token %}
+    <h2>Consumer Login</h2>
+    <input type="text" name="consumerUsername"id="consumerUsername" placeholder="Email_ID" required />
+    <input type="password"name="consumerPassword" id="consumerPassword" placeholder="Password" required />
+    <button type="submit"name="login">Login</button>
+    <p class="redirect">Don't have an account? <a href="{% url 'consumer_signup' %}">Sign Up</a></p>
+</form>
+
+  
+</body>
+</html>

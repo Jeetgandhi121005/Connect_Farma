@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="icon" href="{% static 'intro.png' %}" type="image/png">
+    <link rel="stylesheet" href="{% static 'consumer_home.css' %}"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* All your CSS styles are correct and go here */
+        body { 
+            font-family: 'Roboto Slab', serif; 
+            background: #f0f0f0; 
+        }
+        .invoice-container {
+            width: 90%;
+            max-width: 900px;
+            margin: 60px auto;
+            background-color: #fff;
+            padding: 50px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .header-section {
+            border-bottom: 4px solid #38761d;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .header-section h1 {
+            color: #38761d;
+            font-family: 'Roboto Slab', serif;
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .header-section p {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #555;
+        }
+        .info-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; 
+            gap: 30px;
+            margin-bottom: 40px;
+            padding: 15px 0;
+            border-bottom: 1px dashed #ccc;
+        }
+        .shipping-info, .order-details, .delivery-info {
+            padding-right: 20px;
+            border-right: 1px solid #eee;
+        }
+        .delivery-info {
+            border-right: none;
+        }
+        .shipping-info h3, .order-details h3, .delivery-info h3 {
+            color: #6aa84f;
+            border-left: 3px solid #6aa84f;
+            padding-left: 10px;
+            margin-bottom: 12px;
+        }
+        .info-block p {
+            margin-bottom: 5px; 
+            line-height: 1.5;
+            font-size: 0.95em;
+        }
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+        .product-table th, .product-table td {
+            border: 1px solid #eee;
+            padding: 15px;
+            text-align: left;
+        }
+        .product-table th {
+            background-color: #d9ead3;
+            color: #38761d;
+            font-family: 'Roboto Slab', serif;
+        }
+        .total-summary {
+            width: 45%;
+            margin-left: auto;
+            margin-top: 40px;
+            border-top: 3px solid #38761d;
+            padding: 10px 0;
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+        .total-row.grand-total {
+            font-size: 1.4em;
+            font-weight: bold;
+            background-color: #e9f5e9;
+            padding: 15px 10px;
+            margin-top: 10px;
+        }
+        .action-buttons {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .action-buttons button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        #print-bill {
+            background-color: #007bff;
+            color: white;
+            margin-right: 15px;
+        }
+        #continue-shopping {
+            background-color: #6aa84f;
+            color: white;
+        }
+        @media print {
+            .navbar, .footer, .action-buttons {
+                display: none;
+            }
+            .invoice-container {
+                box-shadow: none;
+                border: none;
+                margin: 0;
+                width: 100%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="{% static 'intro.png' %}" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">ConnectFrama</span>
+        </div>
+        <nav class="nav-links">
+            <a href="{% url 'consumer_home' %}">Home</a>
+            <a href="{% url 'about_us' %}">About Us</a>
+            <a href="{% url 'cart_view' %}">Cart</a>
+            <a href="{% url 'reviews' %}">Reviews</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </nav>
+    </header>
+
+<div class="invoice-container">
+    <div class="header-section">
+        <h1>Order Invoice / Bill</h1>
+        <p>Order ID: <span>{{ order.id }}</span></p>
+    </div>
+
+    <div class="info-block">
+        <div class="shipping-info">
+            <h3>Delivery Address</h3>
+            <p>{{ order.full_name }}</p>
+            <p>{{ order.address }}</p>
+            <p>Pincode: <span>{{ order.pincode }}</span></p>
+            <p>Mobile: <span>{{ order.mobile }}</span></p>
+        </div>
+        
+        <div class="order-details">
+            <h3>Order Details</h3>
+            <p>Order Date: <span>{{ order.order_date|date:"d M Y, P" }}</span></p>
+            <p>Payment Method: <span>{{ order.payment_method }}</span></p>
+            <p style="font-weight: bold;">Status: Confirmed & Ready to Ship</p>
+        </div>
+
+        <div class="delivery-info">
+            <h3>Expected Delivery</h3>
+            <p>Delivery Date:</p>
+            <p style="font-size: 1.2em; font-weight: bold; color: #38761d;"><span>{{ expected_delivery_date|default:"Tomorrow" }}</span></p>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #555;">Delivery Window: **6 AM - 9 AM**</p>
+        </div>
+    </div>
+
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Product Name</th>
+                <th>Price/Unit</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.items.all %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.product.name }}</td>
+                <td>₹{{ item.price|floatformat:2 }}/{{ item.product.unit }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{% widthratio item.price 1 item.quantity %}.00</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="total-summary">
+        <div class="total-row">
+            <span>Items Subtotal:</span>
+            <span>₹{{ order.total_amount|floatformat:2 }}</span>
+        </div>
+        <div class="total-row">
+            <span>Delivery Charge:</span>
+            <span>₹{{ delivery_fee|floatformat:2 }}</span>
+        </div>
+        <div class="total-row grand-total">
+            <span>Total Payable:</span>
+            <span>₹{{ grand_total|floatformat:2 }}</span>
+        </div>
+    </div>
+    
+    <div class="action-buttons">
+        <button id="print-bill" onclick="window.print()">🖨️ Print Bill</button>
+        <button id="continue-shopping" onclick="window.location.href='{% url 'consumer_home' %}'">← Continue Shopping</button>
+    </div>
+</div>
+    <footer class="footer">
+        © 2025 ConnectFrama. All rights reserved.
+    </footer>
+    
+    </body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="icon" href="intro.png" type="image/png">
+    <link rel="stylesheet" href="consumer_home.css"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Invoice/Bill Specific Styles */
+        body { 
+            font-family: 'Roboto Slab', serif; 
+            background: #f0f0f0; 
+        }
+
+        .invoice-container {
+            width: 90%;
+            max-width: 900px; /* 🟢 INCREASED SPACING (Thoda aur wide kiya) */
+            margin: 60px auto; /* 🟢 INCREASED SPACING */
+            background-color: #fff;
+            padding: 50px; /* 🟢 INCREASED SPACING (Increased main padding) */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-section {
+            border-bottom: 4px solid #38761d;
+            padding-bottom: 15px; /* 🟢 INCREASED SPACING */
+            margin-bottom: 30px; /* 🟢 INCREASED SPACING */
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .header-section h1 {
+            color: #38761d;
+            font-family: 'Roboto Slab', serif;
+            margin: 0;
+            font-size: 2.5em; /* Thoda bada kiya */
+        }
+        
+        .header-section p {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #555;
+        }
+
+        /* Updated Info Block to accommodate delivery date */
+        .info-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; 
+            gap: 30px; /* 🟢 INCREASED SPACING (Increased gap between columns) */
+            margin-bottom: 40px; /* 🟢 INCREASED SPACING */
+            padding: 15px 0; /* 🟢 INCREASED SPACING */
+            border-bottom: 1px dashed #ccc;
+        }
+        
+        .shipping-info, .order-details, .delivery-info {
+            padding-right: 20px;
+            border-right: 1px solid #eee;
+        }
+        .delivery-info {
+            border-right: none;
+        }
+
+        .shipping-info h3, .order-details h3, .delivery-info h3 {
+            color: #6aa84f;
+            border-left: 3px solid #6aa84f;
+            padding-left: 10px;
+            margin-bottom: 12px; /* 🟢 INCREASED SPACING */
+        }
+
+        /* 🟢 INCREASED SPACING for Paragraphs in Info Block */
+        .info-block p {
+            margin-bottom: 5px; 
+            line-height: 1.5; /* Added line-height for readability */
+            font-size: 0.95em;
+        }
+        
+        /* Product Table */
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px; /* 🟢 INCREASED SPACING */
+        }
+        .product-table th, .product-table td {
+            border: 1px solid #eee;
+            padding: 15px; /* 🟢 INCREASED SPACING (More padding inside table cells) */
+            text-align: left;
+        }
+        .product-table th {
+            background-color: #d9ead3;
+            color: #38761d;
+            font-family: 'Roboto Slab', serif;
+        }
+        
+        /* Total Calculation Summary */
+        .total-summary {
+            width: 45%; /* Thoda bada kiya for better alignment */
+            margin-left: auto;
+            margin-top: 40px; /* 🟢 INCREASED SPACING */
+            border-top: 3px solid #38761d;
+            padding: 10px 0; /* Added padding to separate from table */
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0; /* 🟢 INCREASED SPACING */
+        }
+        .total-row.grand-total {
+            font-size: 1.4em; /* Thoda bada kiya */
+            font-weight: bold;
+            background-color: #e9f5e9;
+            padding: 15px 10px; /* 🟢 INCREASED SPACING (More padding for Grand Total) */
+            margin-top: 10px;
+        }
+
+        /* Footer and Actions */
+        .action-buttons {
+            text-align: center;
+            margin-top: 50px; /* 🟢 INCREASED SPACING */
+        }
+
+        .action-buttons button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        #print-bill {
+            background-color: #007bff;
+            color: white;
+            margin-right: 15px;
+        }
+
+        #continue-shopping {
+            background-color: #6aa84f;
+            color: white;
+        }
+
+        /* Print media styles */
+        @media print {
+            .navbar, .footer, .action-buttons {
+                display: none;
+            }
+            .invoice-container {
+                box-shadow: none;
+                border: none;
+                margin: 0;
+                width: 100%;
+                padding: 20px; /* Print mein padding kam rakha */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="intro.png" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">ConnectFrama</span>
+        </div>
+        <nav class="nav-links">
+            <a href="consumer_home.html">Home</a>
+            <a href="about_us.html">About Us</a>
+            <a href="cart.html">Cart</a>
+            <a href="reviews.html">Reviews</a> <a href="consumer_home.html#contact-us-section">Contact Us</a> <a href="index.html">Logout</a>
+        </nav>
+    </header>
+
+    <div class="invoice-container">
+        <div class="header-section">
+            <h1>Order Invoice / Bill</h1>
+            <p>Order ID: <span id="order-id">CFM-</span></p>
+        </div>
+
+        <div class="info-block">
+            <div class="shipping-info">
+                <h3>Delivery Address</h3>
+                <p id="bill-full-name">Customer Name</p>
+                <p id="bill-address">Shipping Address Line 1, City, State</p>
+                <p>Pincode: <span id="bill-pincode">400001</span></p>
+                <p>Mobile: <span id="bill-mobile">9876543210</span></p>
+            </div>
+            
+            <div class="order-details">
+                <h3>Order Details</h3>
+                <p>Order Date: <span id="bill-date">01/01/2025</span></p>
+                <p>Payment Method: <span id="bill-payment-method">COD</span></p>
+                <p style="font-weight: bold;">Status: Confirmed & Ready to Ship</p>
+            </div>
+
+            <div class="delivery-info">
+                <h3>Expected Delivery</h3>
+                <p>Delivery Date:</p>
+                <p style="font-size: 1.2em; font-weight: bold; color: #38761d;"><span id="bill-delivery-date">Loading...</span></p>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #555;">Delivery Window: **6 AM - 9 AM**</p>
+            </div>
+        </div>
+
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Product Name</th>
+                    <th>Price/Unit</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody id="bill-items-body">
+                </tbody>
+        </table>
+
+        <div class="total-summary">
+            <div class="total-row">
+                <span>Items Subtotal:</span>
+                <span id="bill-subtotal">₹0.00</span>
+            </div>
+            <div class="total-row">
+                <span>Delivery Charge:</span>
+                <span id="bill-delivery-fee">₹0.00</span>
+            </div>
+            <div class="total-row grand-total">
+                <span>Total Payable:</span>
+                <span id="bill-grand-total">₹0.00</span>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button id="print-bill" onclick="window.print()">🖨️ Print Bill</button>
+            <button id="continue-shopping">← Continue Shopping</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        © 2025 ConnectFrama. All rights reserved.
+    </footer>
+    
+    <script>
+        // --- ORDER CONFIRMATION LOGIC ---
+        const DELIVERY_FEE = 30.00; 
+        
+        // 🟢 [NEW FEATURE] Function to calculate expected delivery date (Tomorrow's date)
+        function calculateDeliveryDate(orderDate) {
+            const date = new Date(orderDate);
+            // Delivery is usually next day for fresh produce
+            date.setDate(date.getDate() + 1); 
+            
+            return date.toLocaleDateString('en-IN', {
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric'
+            });
+        }
+
+        function generateUniqueId() {
+            return 'CFM-' + Date.now().toString().slice(-6) + Math.random().toString(36).substring(2, 5).toUpperCase();
+        }
+
+        function displayInvoice() {
+            // 1. Get the final order data from temporary storage
+            const finalOrder = JSON.parse(localStorage.getItem('finalOrderData'));
+            const finalCart = JSON.parse(localStorage.getItem('finalCartItems'));
+
+            const orderDateTime = new Date(); // Use current date/time as order placement time
+
+            if (!finalOrder || !finalCart || finalCart.length === 0) {
+                document.querySelector('.invoice-container').innerHTML = '<h2>Order Not Found</h2><p>It looks like the order data has expired or was not saved correctly. Please return to the <a href="consumer_home.html">Home page</a>.</p>';
+                return;
+            }
+
+            // 2. Display Order Details
+            document.getElementById('order-id').textContent = finalOrder.orderId || generateUniqueId();
+            document.getElementById('bill-date').textContent = orderDateTime.toLocaleDateString('en-IN', {
+                year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+            document.getElementById('bill-payment-method').textContent = finalOrder.paymentMethod;
+
+            // 🟢 [NEW FEATURE] Display Expected Delivery Date
+            document.getElementById('bill-delivery-date').textContent = calculateDeliveryDate(orderDateTime);
+
+
+            // 3. Display Shipping Details
+            document.getElementById('bill-full-name').textContent = finalOrder.fullName;
+            document.getElementById('bill-address').textContent = finalOrder.address;
+            document.getElementById('bill-pincode').textContent = finalOrder.pincode;
+            document.getElementById('bill-mobile').textContent = finalOrder.mobileNumber;
+
+            // 4. Display Cart Items and Calculate Totals
+            const billItemsBody = document.getElementById('bill-items-body');
+            billItemsBody.innerHTML = '';
+            let subtotal = 0;
+            
+            finalCart.forEach((item, index) => {
+                const itemTotal = parseFloat(item.price) * item.quantity;
+                subtotal += itemTotal;
+                
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.name}</td>
+                    <td>₹${parseFloat(item.price).toFixed(2)}/${item.unit}</td>
+                    <td>${item.quantity}</td>
+                    <td>₹${itemTotal.toFixed(2)}</td>
+                `;
+                billItemsBody.appendChild(newRow);
+            });
+            
+            // 5. Display Final Totals
+            const grandTotal = subtotal + DELIVERY_FEE;
+            
+            document.getElementById('bill-subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+            document.getElementById('bill-delivery-fee').textContent = `₹${DELIVERY_FEE.toFixed(2)}`;
+            document.getElementById('bill-grand-total').textContent = `₹${grandTotal.toFixed(2)}`;
+
+            // 6. Clear temporary data after successful display
+            localStorage.removeItem('finalOrderData');
+            localStorage.removeItem('finalCartItems');
+        }
+
+        document.addEventListener('DOMContentLoaded', displayInvoice);
+        
+        document.getElementById('continue-shopping').addEventListener('click', () => {
+            window.location.href = 'consumer_home.html';
+        });
+
+    </script>
+</body>
+</html>

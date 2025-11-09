@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Checkout</title>
+    <link rel="icon" href="{% static 'intro.png' %}" type="image/png">
+    <link rel="stylesheet" href="{% static 'consumer_home.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* All your CSS styles are correct and go here */
+        body { font-family: 'Roboto Slab', serif; background-color: #f0f0f0; }
+        .new-checkout-wrapper {
+            width: 90%;
+            max-width: 800px; 
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .checkout-section h2 {
+            font-family: 'Roboto Slab', serif;
+            color: #38761d;
+            border-bottom: 3px solid #6aa84f;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+        .form-row { margin-bottom: 20px; }
+        .form-row label { display: block; margin-bottom: 8px; font-weight: 700; color: #555; }
+        .form-row input, .form-row textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        #upi-pin-row {
+            max-width: 200px; 
+        }
+        .payment-option-box { 
+            padding: 15px; 
+            border: 1px solid #ccc; 
+            border-radius: 6px; 
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .payment-option-box:hover { background-color: #e9f5e9; border-color: #4CAF50; }
+        .payment-option-box input[type="radio"] { width: auto; margin-right: 15px; }
+        .payment-sub-fields {
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+            margin-top: 15px;
+            display: none; 
+        }
+        .card-details-row {
+            display: flex;
+            gap: 20px;
+        }
+        .card-details-row > div {
+            flex: 1;
+        }
+        #final-order-button {
+            width: 100%;
+            padding: 18px;
+            background-color: #f00; 
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+        #final-order-button:hover { background-color: #cc0000; }
+
+        /* This CSS is to make the sub-fields show/hide */
+        .payment-option-box input[type="radio"]:checked ~ .payment-sub-fields {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="{% static 'intro.png' %}" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">ConnectFrama</span>
+        </div>
+        <nav class="nav-links">
+            <a href="{% url 'consumer_home' %}">Home</a>
+            <a href="{% url 'about_us' %}">About Us</a>
+            <a href="{% url 'cart_view' %}">Cart</a>
+            <a href="{% url 'reviews' %}">Reviews</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </nav>
+    </header>
+
+    {% if messages %}
+    <div style="padding: 15px; background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; text-align: center; font-weight: bold; width: 90%; max-width: 800px; margin: 10px auto; border-radius: 8px;">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="POST" action="{% url 'checkout_view' %}">
+        {% csrf_token %}
+        <div class="new-checkout-wrapper">
+            
+            <div class="checkout-section delivery-details">
+                <h2>1. Delivery Address</h2>
+                <div class="form-row">
+                    <label for="user-full-name">Full Name</label>
+                    <input type="text" id="user-full-name" name="user-full-name" required>
+                </div>
+                <div class="form-row">
+                    <label for="user-mobile">Mobile Number</label>
+                    <input type="tel" id="user-mobile" name="user-mobile" required pattern="[0-9]{10}" placeholder="10 digit number">
+                </div>
+                <div class="form-row">
+                    <label for="user-address">Full Address (House No, Street, Landmark)</label>
+                    <textarea id="user-address" name="user-address" rows="4" required></textarea>
+                </div>
+                <div class="form-row">
+                    <label for="user-pincode">Pincode</label>
+                    <input type="text" id="user-pincode" name="user-pincode" required pattern="[0-9]{6}" placeholder="6 digit pincode">
+                </div>
+            </div>
+
+            <div class="checkout-section payment-section">
+                <h2>2. Payment Method</h2>
+                
+                <div class="payment-option-box" data-method="cod">
+                    <label>
+                        <input type="radio" name="payment-method-new" value="Cash On Delivery" checked>
+                        Cash On Delivery (COD)
+                    </label>
+                </div>
+                
+                <div class="payment-option-box" data-method="upi">
+                    <label>
+                        <input type="radio" name="payment-method-new" value="UPI">
+                        UPI / GPay / PhonePe (Simulated)
+                    </label>
+                    <div id="upi-fields" class="payment-sub-fields">
+                        <div class="form-row">
+                            <label for="upi-id">Enter UPI ID</label>
+                            <input type="text" id="upi-id" name="upi-id" placeholder="example@bankname">
+                        </div>
+                        <div class="form-row" id="upi-pin-row">
+                            <label for="upi-pin">Enter 4-digit PIN</label>
+                            <input type="password" id="upi-pin" name="upi-pin" placeholder="XXXX" pattern="[0-9]{4}" maxlength="4">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="payment-option-box" data-method="card">
+                    <label>
+                        <input type="radio" name="payment-method-new" value="Card">
+                        Credit / Debit Card (Simulated)
+                    </label>
+                    <div id="card-fields" class="payment-sub-fields">
+                        <div class="form-row">
+                            <label for="card-number">Card Number</label>
+                            <input type="text" id="card-number" name="card-number" placeholder="XXXX XXXX XXXX XXXX" pattern="[0-9]{16}" maxlength="16">
+                        </div>
+                        <div class="card-details-row">
+                            <div>
+                                <label for="card-expiry">Expiry (MM/YY)</label>
+                                <input type="text" id="card-expiry" name="card-expiry" placeholder="MM/YY" pattern="(?:0[1-9]|1[0-2])/[0-9]{2}" maxlength="5">
+                            </div>
+                            <div>
+                                <label for="card-cvv">CVV</label>
+                                <input type="password" id="card-cvv" name="card-cvv" placeholder="XXX" pattern="[0-9]{3}" maxlength="3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="final-order-button" type="submit">PLACE ORDER</button>
+        </div>
+    </form>
+
+    <footer class="footer">
+        © 2025 ConnectFrama. All rights reserved.
+    </footer>
+    
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- Input Field References ---
+        // Get all the inputs that should only be active for their specific payment method
+        const upiIdInput = document.getElementById('upi-id');
+        const upiPinInput = document.getElementById('upi-pin');
+        
+        const cardNumberInput = document.getElementById('card-number');
+        const cardExpiryInput = document.getElementById('card-expiry');
+        const cardCvvInput = document.getElementById('card-cvv');
+
+        // Get all radio buttons
+        const paymentRadios = document.querySelectorAll('input[name="payment-method-new"]');
+        
+        // Function to update the form
+        function updatePaymentFields() {
+            // Get the value of the currently selected radio button
+            const selectedMethod = document.querySelector('input[name="payment-method-new"]:checked').value;
+
+            // --- 1. Disable ALL payment inputs first ---
+            // This is the most important step.
+            upiIdInput.disabled = true;
+            upiPinInput.disabled = true;
+            cardNumberInput.disabled = true;
+            cardExpiryInput.disabled = true;
+            cardCvvInput.disabled = true;
+            
+            // --- 2. Hide all sub-field containers ---
+            document.querySelectorAll('.payment-sub-fields').forEach(field => {
+                field.style.display = 'none';
+            });
+
+            // --- 3. Enable ONLY the inputs for the selected method ---
+            if (selectedMethod === 'UPI') {
+                // Show the UPI container
+                document.getElementById('upi-fields').style.display = 'block';
+                // Enable UPI inputs (and make them required)
+                upiIdInput.disabled = false;
+                upiIdInput.required = true;
+                upiPinInput.disabled = false;
+                upiPinInput.required = true;
+                
+            } else if (selectedMethod === 'Card') {
+                // Show the Card container
+                document.getElementById('card-fields').style.display = 'block';
+                // Enable Card inputs (and make them required)
+                cardNumberInput.disabled = false;
+                cardNumberInput.required = true;
+                cardExpiryInput.disabled = false;
+                cardExpiryInput.required = true;
+                cardCvvInput.disabled = false;
+                cardCvvInput.required = true;
+
+            } else if (selectedMethod === 'Cash On Delivery') {
+                // Do nothing, all fields are already disabled
+            }
+            
+            // --- 4. Remove 'required' if fields are re-disabled ---
+            // (This is handled by disabling them, but good practice)
+            if (upiIdInput.disabled) upiIdInput.required = false;
+            if (upiPinInput.disabled) upiPinInput.required = false;
+            if (cardNumberInput.disabled) cardNumberInput.required = false;
+            if (cardExpiryInput.disabled) cardExpiryInput.required = false;
+            if (cardCvvInput.disabled) cardCvvInput.required = false;
+        }
+
+        // Add the listener to all radio buttons
+        paymentRadios.forEach(radio => {
+            radio.addEventListener('change', updatePaymentFields);
+        });
+
+        // Run the function once on page load
+        updatePaymentFields();
+    });
+</script>
+</body>
+</html>

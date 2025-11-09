@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collect Payment</title>
+    <link rel="stylesheet" href="{% static 'consumer_home.css' %}">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background-color: #f7fff7; }
+        h2 { text-align: center; color: #38761d; margin-top: 20px; }
+        
+        .payment-form-container {
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .form-row { margin-bottom: 20px; }
+        .form-row label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 700; 
+            color: #555; 
+        }
+        .form-row input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box; /* Important for padding */
+            font-size: 16px;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        .submit-btn:hover { background-color: #45a049; }
+        
+        .total-display {
+            text-align: center;
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        .total-display span {
+            color: #38761d;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="{% static 'intro.png' %}" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">Farmer Connect</span>
+        </div>
+        <nav class="nav-links">
+            <a href="{% url 'farmer_dashboard' %}">Dashboard</a>
+            <a href="{% url 'farmer_products' %}">My Products</a>
+            <a href="{% url 'farmer_orders' %}">Orders</a>
+            <a href="{% url 'farmer_payments' %}" style="font-weight: bold;">Payments</a>
+            <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+        </nav>
+    </header>
+
+    <div class="payment-form-container">
+        <h2>Confirm Your Payout</h2>
+        
+        <div class="total-display">
+            Total Payout Amount: <span>₹{{ total_payout|floatformat:2 }}</span>
+        </div>
+
+        <p style="text-align: center; color: #555;">
+            Please enter your bank details. The payment will be processed within 2-3 business days.
+        </p>
+        
+        {% if messages %}
+            <div style="padding: 15px; background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; text-align: center; font-weight: bold; margin-bottom: 15px;">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'collect_payment' %}">
+            {% csrf_token %}
+            <div class="form-row">
+                <label for="bank_name">Bank Name</label>
+                <input type="text" id="bank_name" name="bank_name" required>
+            </div>
+            <div class="form-row">
+                <label for="account_holder">Account Holder Name</label>
+                <input type="text" id="account_holder" name="account_holder" required>
+            </div>
+            <div class="form-row">
+                <label for="account_number">Account Number</label>
+                <input type="text" id="account_number" name="account_number" required>
+            </div>
+            <div class="form-row">
+                <label for="ifsc_code">IFSC Code</label>
+                <input type="text" id="ifsc_code" name="ifsc_code" required>
+            </div>
+            
+            <button type="submit" class="submit-btn">Submit & Receive Payment</button>
+        </form>
+    </div>
+</body>
+</html>

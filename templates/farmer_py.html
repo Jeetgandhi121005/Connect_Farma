@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+  <meta charset="UTF-8">
+  <title>Farmer Payments</title>
+  <link rel="stylesheet" href="{% static 'consumer_home.css' %}">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; }
+    .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .data-table th, .data-table td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    .data-table th { background: green; color: #fff; }
+    .data-table tr.total-row td {
+        font-weight: bold;
+        font-size: 1.1em;
+        background-color: #f8f8f8;
+    }
+    .data-table .your-amount {
+        color: #388e3c;
+        font-weight: bold;
+    }
+
+    h2 { padding: 20px 20px 0 20px; }
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+    }
+    .payout-button {
+        padding: 10px 15px;
+        background-color: #AEEA00;
+        color: #333;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        font-family: Arial, sans-serif;
+        font-size: 1em;
+    }
+    .payout-button:hover {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .payout-button.disabled {
+        background-color: #ccc;
+        color: #777;
+        cursor: not-allowed;
+    }
+    .status-message {
+        padding: 10px 15px;
+        background-color: #fff9c4;
+        color: #fbc02d;
+        font-weight: bold;
+        border-radius: 6px;
+    }
+    .get-payment-container {
+        text-align: center;
+        padding: 30px;
+        background-color: #f7fff7;
+        border-top: 2px solid #6aa84f;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+      <div class="logo-container">
+          <img src="{% static 'intro.png' %}" alt="ConnectFrama Logo" class="nav-logo">
+          <span class="logo">Farmer Connect</span>
+      </div>
+      <nav class="nav-links">
+          <a href="{% url 'farmer_dashboard' %}">Dashboard</a>
+          <a href="{% url 'farmer_products' %}">My Products</a>
+          <a href="{% url 'farmer_orders' %}">Orders</a>
+          <a href="{% url 'farmer_payments' %}" style="font-weight: bold;">Payments</a>
+          <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+      </nav>
+  </header>
+
+  {% if messages %}
+    <div style="padding: 15px; background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; text-align: center; font-weight: bold;">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="page-header">
+    <h2>Pending Payouts</h2>
+    
+    {% if has_unpaid_items %}
+        {% if farmer_status == 'none' %}
+            <form action="{% url 'request_payout' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="payout-button">Request Payout</button>
+            </form>
+        {% elif farmer_status == 'requested' %}
+            <span class="status-message">Payout Request Pending Admin Approval...</span>
+        {% elif farmer_status == 'approved' %}
+            <span class="status-message" style="background-color: #d4edda; color: #155724;">Payout Approved! Scroll down to get payment.</span>
+        {% endif %}
+    {% endif %}
+  </div>
+
+  <table class="data-table">
+    <thead>
+        <tr>
+          <th>Payment ID (Order)</th>
+          <th>Order Date</th>
+          <th>Product</th>
+          <th>Total Amount</th>
+          <th>Our Commission (15%)</th>
+          <th>Your Amount</th>
+          <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in payment_data %}
+          <tr>
+            <td>{{ data.item.order.id }}</td>
+            <td>{{ data.item.order.order_date|date:"d M Y" }}</td>
+            <td>{{ data.item.product.name }}</td>
+            <td>₹{{ data.total_amount|floatformat:2 }}</td>
+            <td>₹{{ data.our_commission|floatformat:2 }}</td>
+            <td class="your-amount">₹{{ data.farmer_amount|floatformat:2 }}</td>
+            <td><span style="color: #e6b800; font-weight: bold;">Pending Payout</span></td>
+          </tr>
+        {% empty %}
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 30px;">You have no pending payments.</td>
+            </tr>
+        {% endfor %}
+        
+        {% if has_unpaid_items %}
+            <tr class="total-row">
+                <td colspan="5" style="text-align: right;">Total Amount Due:</td>
+                <td class="your-amount">₹{{ total_unpaid_amount|floatformat:2 }}</td>
+                <td></td>
+            </tr>
+        {% endif %}
+    </tbody>
+  </table>
+
+  {% if farmer_status == 'approved' and has_unpaid_items %}
+    <div class="get-payment-container">
+        <h2>Your Payout is Ready</h2>
+        <a href="{% url 'collect_payment' %}" class="payout-button">Get Payment of ₹{{ total_unpaid_amount|floatformat:2 }}</a>
+    </div>
+  {% endif %}
+
+  </body>
+</html>

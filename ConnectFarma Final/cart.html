@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="icon" href="intro.png" type="image/png">
+    <link rel="stylesheet" href="consumer_home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Existing Cart Styles */
+        body { font-family: 'Roboto Slab', serif; background-color: #f8f8f8; }
+        
+        .cart-container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #38761d;
+            border-bottom: 3px solid #6aa84f;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+
+        /* Cart Item Styling */
+        .cart-item {
+            display: flex;
+            align-items: center;
+            border: 1px solid #eee;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            transition: box-shadow 0.3s;
+        }
+        .cart-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-details {
+            flex-grow: 1;
+            padding-left: 20px;
+        }
+
+        .item-details h3 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: #e54c4c; /* Red color for price */
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .remove-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .remove-btn:hover { background-color: #d32f2f; }
+        
+        /* Summary and Checkout */
+        .cart-summary {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #ccc;
+        }
+
+        .total-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .grand-total {
+            color: #38761d;
+            font-size: 1.5em;
+            border-top: 1px dashed #ccc;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        #checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #4CAF50; /* Green Button */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        #checkout-btn:hover { background-color: #45a049; }
+        
+        /* Empty Cart Message */
+        #empty-cart-message {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.5em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="intro.png" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">ConnectFrama</span>
+        </div>
+        <nav class="nav-links">
+            <a href="consumer_home.html">Home</a>
+            <a href="about_us.html">About Us</a>
+            <a href="cart.html">Cart</a>
+            <a href="reviews.html">Reviews</a>
+            <a href="index.html">Logout</a>
+        </nav>
+    </header>
+
+    <div class="cart-container">
+        <h1>Your Shopping Cart</h1>
+        
+        <div id="cart-items-container">
+            <p id="empty-cart-message" style="display: none;">Your cart is empty. Please add some products from the Home page.</p>
+        </div>
+        
+        <div class="cart-summary" id="cart-summary">
+            <div class="total-line">
+                <span>Subtotal:</span>
+                <span id="subtotal-amount">₹0.00</span>
+            </div>
+            <div class="total-line grand-total">
+                <span>Total Items:</span>
+                <span id="total-items-count">0</span>
+            </div>
+            
+            <button id="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        © 2025 ConnectFrama. All rights reserved.
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 1. Get Cart Data (using the same key as checkout.html)
+            let cartItems = JSON.parse(localStorage.getItem('connectFramaCart')) || [];
+            
+            const cartContainer = document.getElementById('cart-items-container');
+            const subtotalAmountSpan = document.getElementById('subtotal-amount');
+            const totalItemsCountSpan = document.getElementById('total-items-count');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const emptyMessage = document.getElementById('empty-cart-message');
+            const summaryDiv = document.getElementById('cart-summary');
+
+            // 2. CORE FUNCTION: Render and Calculate
+            function renderCart() {
+                cartContainer.innerHTML = '';
+                let subtotal = 0;
+                let totalItems = 0;
+
+                if (cartItems.length === 0) {
+                    emptyMessage.style.display = 'block';
+                    summaryDiv.style.display = 'none';
+                    return;
+                }
+
+                emptyMessage.style.display = 'none';
+                summaryDiv.style.display = 'block';
+
+                cartItems.forEach((item, index) => {
+                    const itemPrice = parseFloat(item.price) || 0;
+                    const itemQuantity = Number(item.quantity) || 1; 
+                    
+                    subtotal += itemPrice * itemQuantity;
+                    totalItems += itemQuantity;
+
+                    const itemElement = document.createElement('div');
+                    itemElement.classList.add('cart-item');
+                    itemElement.innerHTML = `
+                        <div class="item-details">
+                            <h3>${item.name}</h3>
+                            <div class="item-price">₹${(itemPrice * itemQuantity).toFixed(2)}</div>
+                        </div>
+                        <div class="item-controls">
+                            <label for="qty-${index}">Qty:</label>
+                            <input type="number" id="qty-${index}" class="quantity-input" data-index="${index}" value="${itemQuantity}" min="1" max="99">
+                            <button class="remove-btn" data-index="${index}">Remove</button>
+                        </div>
+                    `;
+                    cartContainer.appendChild(itemElement);
+                });
+
+                // Update Summary
+                subtotalAmountSpan.textContent = `₹${subtotal.toFixed(2)}`;
+                totalItemsCountSpan.textContent = totalItems;
+                
+                // 3. Save Cart Data to Local Storage after any change
+                localStorage.setItem('connectFramaCart', JSON.stringify(cartItems));
+
+                // Add Event Listeners for new elements
+                addEventListeners();
+            }
+
+            // 4. Update Quantity/Remove Item Handlers
+            function addEventListeners() {
+                // Quantity Update
+                document.querySelectorAll('.quantity-input').forEach(input => {
+                    input.addEventListener('change', function(e) {
+                        const index = Number(e.target.dataset.index);
+                        let newQuantity = Number(e.target.value);
+                        
+                        // Validation
+                        if (newQuantity < 1 || isNaN(newQuantity)) {
+                            newQuantity = 1;
+                            e.target.value = 1;
+                        }
+
+                        cartItems[index].quantity = newQuantity;
+                        renderCart(); // Re-render to update totals
+                    });
+                });
+
+                // Remove Item
+                document.querySelectorAll('.remove-btn').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        const index = Number(e.target.dataset.index);
+                        cartItems.splice(index, 1); // Remove item from array
+                        renderCart(); // Re-render to update totals
+                    });
+                });
+            }
+
+            // 5. CRITICAL FIX: Save cart items before redirecting to checkout
+            checkoutBtn.addEventListener('click', function() {
+                if (cartItems.length > 0) {
+                    // Final save to ensure checkout page gets the latest data
+                    localStorage.setItem('connectFramaCart', JSON.stringify(cartItems));
+                    window.location.href = 'checkout.html';
+                } else {
+                    alert("Your cart is empty. Please add items before proceeding to checkout.");
+                }
+            });
+
+            // Initial render when page loads
+            renderCart();
+        });
+    </script>
+</body>
+</html>

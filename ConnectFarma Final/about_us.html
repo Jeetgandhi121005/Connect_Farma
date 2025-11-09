@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="icon" href="intro.png" type="image/png">
+    <link rel="stylesheet" href="consumer_home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ANIMATION KEYFRAMES (Duration Adjusted) --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- General Body & Container Styling (Olive & Cream Tones) --- */
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: linear-gradient(145deg, #fcfcfc 0%, #f7f7f0 100%); 
+        }
+
+        .about-us-container {
+            width: 90%;
+            max-width: 1100px; 
+            margin: 70px auto; 
+            padding: 70px; 
+            background-color: #ffffff;
+            border-radius: 25px; 
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15); 
+            border: 1px solid #e0e0d0;
+        }
+        
+        /* --- SCROLL ANIMATION BASE STYLES (TRANSITION DURATION REDUCED to 0.5s) --- */
+        .animate-on-scroll {
+            opacity: 0;
+            /* Faster Transition */
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out; 
+        }
+        .animate-on-scroll.show.fade-up {
+            opacity: 1;
+            transform: translateY(0);
+            /* Apply keyframe animation for a single fast burst */
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        .animate-on-scroll.show.slide-left {
+            opacity: 1;
+            transform: translateX(0);
+             /* Apply keyframe animation for a single fast burst */
+            animation: slideInLeft 0.5s ease-out forwards;
+        }
+
+        /* --- Headings & Text Styling (Spacing Adjusted) --- */
+        .about-us-container h1 {
+            font-size: 3.4em; 
+            color: #4a5c2d; 
+            text-align: center;
+            margin-bottom: 40px; 
+            border-bottom: 6px double #6B8E23;
+            padding-bottom: 20px; 
+            font-weight: 700;
+            letter-spacing: 2px;
+            /* Main title can be slightly slower as it loads first */
+            animation: fadeIn 1.0s ease-out; 
+        }
+        .about-us-container h2 {
+            font-size: 2.3em; 
+            color: #CC6666; 
+            margin-top: 70px; 
+            margin-bottom: 35px; 
+            border-bottom: 2px solid #D88282; 
+            padding-bottom: 10px; 
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .about-us-container p {
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.05);
+            line-height: 2.1; 
+            color: #444;
+            margin-bottom: 35px; 
+            padding: 0 10px;
+        }
+
+        /* --- Highlight Styles (Unchanged Colors) --- */
+        .highlight {
+            font-weight: 700; 
+            color: #6B8E23; 
+            padding: 2px 0;
+            border-bottom: 2px dashed #8baf4e; 
+        }
+        .highlight1 {
+            font-weight: 700; 
+            color: #343333; 
+            padding: 2px 0;
+            border-bottom: 2px dotted #555; 
+        }
+        .about-us-container ul li u {
+            font-weight: 700;
+            color: #CC6666;
+            text-decoration: none;
+            border-bottom: 1px solid #D88282;
+        }
+
+        /* --- Milestone List Styling (Maximum Spacing) --- */
+        .milestone-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 30px; 
+        }
+        .milestone-list li {
+            font-size: 1.15em; 
+            padding: 25px 30px; 
+            border-radius: 12px; 
+            margin-bottom: 20px; 
+            background-color: #f7fff7; 
+            border: 1px solid #e5e5d5;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); 
+            color: #556b2f; 
+            display: flex;
+            align-items: center;
+        }
+        .milestone-list li::before {
+            content: '🌱'; 
+            margin-right: 25px; 
+            font-size: 1.5em;
+            color: #6B8E23;
+        }
+        .about-us-container ul {
+             list-style-type: disc; 
+             margin-left: 30px; 
+             padding-left: 10px;
+             padding-bottom: 15px;
+        }
+        .about-us-container ul li {
+            margin-bottom: 15px; 
+            line-height: 1.8;
+            font-size: 1.15em;
+        }
+
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="intro.png" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">ConnectFrama</span>
+        </div>
+        <nav class="nav-links">
+            <a href="consumer_home.html">Home</a>
+            <a href="about_us.html" style="font-weight: bold;">About Us</a> 
+            <a href="cart.html">Cart</a>
+            <a href="reviews.html">Reviews</a>
+            <a href="index.html">Logout</a>
+        </nav>
+    </header>
+
+    <div class="about-us-container">
+        <h1>Welcome to ConnectFrama</h1>
+        <p class="animate-on-scroll fade-up" style="text-align: center; font-size: 1.5em; color: #CC6666; font-style: italic; margin-bottom: 50px;">"Building a direct path from Indian farms to your table."</p>
+
+        <h2 class="animate-on-scroll slide-left">Our Mission: Empowering Farmers, Delighting Customers</h2>
+        <p class="animate-on-scroll fade-up">At ConnectFrama, our core mission is twofold: to <span class="highlight">empower the backbone of India—its farmers</span>—by ensuring fair returns for their produce, and to provide urban consumers with access to the <span class="highlight">freshest, highest-quality</span> agricultural products directly from the source.</p>
+
+        <h2 class="animate-on-scroll slide-left">Bridging the Gap: The ConnectFrama Solution</h2>
+        <p class="animate-on-scroll fade-up">The traditional agricultural supply chain is inefficient, marked by multiple middlemen that erode farmer profits and inflate consumer prices. <span class="highlight">We are dismantling this system.</span></p>
+        <p class="animate-on-scroll fade-up">Using a <span class="highlight">tech-enabled direct-to-consumer model</span>, ConnectFrama removes intermediaries, ensuring that farm produce reaches your kitchen within <span class="highlight">12 to 24 hours of harvest.</span> This maximizes freshness and minimizes wastage.</p>
+        
+        <h2 class="animate-on-scroll slide-left">Our Founding Journey</h2>
+        <p class="animate-on-scroll fade-up">ConnectFrama was founded on the principle of fairness and freshness. Our journey began with a simple goal: to create a transparent ecosystem where both the producer and the consumer win. Our key achievements so far include:</p>
+        
+        <ul class="milestone-list">
+            <li class="animate-on-scroll slide-left">Successfully launching operations in our pilot city.</li>
+            <li class="animate-on-scroll slide-left">Establishing direct partnerships with local, dedicated farming communities.</li>
+            <li class="animate-on-scroll slide-left">Developing a robust logistics network for guaranteed fresh delivery.</li>
+            <li class="animate-on-scroll slide-left">Creating a seamless, secure ordering platform for consumers.</li>
+        </ul>
+
+        <h2 class="animate-on-scroll slide-left">Why Choose ConnectFrama?</h2>
+        <ul class="animate-on-scroll fade-up">
+            <li><u>Guaranteed Freshness:</u> Experience true farm-to-table quality. We only source and deliver the freshest harvest.</li>
+            <li><u>Fair Pricing & Transparency:</u> We ensure our farmers receive their fair share while keeping prices affordable for you. Every purchase directly supports local farming communities.</li>
+            <li><u>Seamless Experience:</u> Our platform makes ordering fresh produce easy, reliable, and secure.</li>
+        </ul>
+        
+        <h2 class="animate-on-scroll slide-left">Our Future Vision</h2>
+        <p class="animate-on-scroll fade-up">We are focused on building a sustainable and expanded future for ConnectFrama:</p>
+        <ul class="animate-on-scroll fade-up">
+            <li><u>Expansion:</u> Our next goal is to launch services in <span class="highlight1">major metropolitan cities</span> to connect with more farming belts.</li>
+            <li><u>Sustainability:</u> Implementing <span class="highlight1">plastic-free packaging</span> and adopting <span class="highlight1">Zero-Waste</span> delivery logistics.</li>
+            <li><u>Tech Innovation:</u> Integrating advanced forecasting models to ensure minimal food wastage at the farm level.</li>
+        </ul>
+        <p class="animate-on-scroll fade-up" style="text-align: center; margin-top: 70px; font-size: 1.2em; font-style: italic; font-weight: bold; color: #4a5c2d; border-top: 2px solid #e0e0e0; padding-top: 35px;">ConnectFrama: Freshness you can trust, quality you can depend on. Join us in building a better future for food.</p>
+    </div>
+
+    <footer class="footer">
+        © 2025 ConnectFrama. All rights reserved.
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null, 
+                rootMargin: '0px',
+                threshold: 0.1 
+            };
+
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    } else {
+                        entry.target.classList.remove('show');
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+            const elementsToAnimate = document.querySelectorAll('.animate-on-scroll, .milestone-list li');
+            elementsToAnimate.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>

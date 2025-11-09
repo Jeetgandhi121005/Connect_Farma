@@ -1,0 +1,105 @@
+ConnectFrama - Bringing Farms to Families - Flowchart Outline
+
+Start
+
+User: 
+Visit Website
+Yes → Browse Products
+No → User did not open the website or abandoned the visit
+
+
+Browse Products
+Yes → Add to Cart
+No → User did not find any product of interest
+
+
+Add to Cart
+Yes → Login / Signup
+No → User browsed but did not add anything to cart
+
+
+Login / Signup
+(If logged in):
+Yes → Place Order
+No → Complete Signup
+
+(If not logged in):
+Yes → Place Order
+No → User dropped off during signup process
+
+
+Place Order
+Yes → Enter Billing Info
+No → User changed mind or had issue finalizing order
+
+
+Enter Billing Info
+Yes → Make Payment
+No → Billing information not entered or invalid
+
+
+Make Payment
+Yes → Receive Receipt
+No → Payment failed or cancelled
+
+
+Website: 
+Notify Admin
+Yes → Admin Receives Order
+No → System error: Order not forwarded to admin
+
+
+Admin: 
+Receive Order
+Yes → Process Order
+No → Admin not notified or system delay
+
+
+Process Order
+Yes → Assign Order to Farmer
+No → Order issue or stock unavailability
+
+
+Assign Order to Farmer
+Yes → Farmer Receives Order
+No → Farmer not available or assignment failed
+
+
+Farmer: 
+Receive Assigned Order
+Yes → Prepare Order
+No → Farmer missed or rejected assignment
+
+
+Prepare Order
+Yes → Deliver to Collection Center / Dark Room
+No → Farmer delayed or lacked inventory
+
+
+Deliver to Collection Center / Dark Room
+Yes → Delivery Partner Picks Up
+No → Delivery handover not completed
+
+
+Delivery Partner: Pickup
+Yes → Deliver to Consumer
+No → Pickup delayed due to logistics issue
+
+
+Deliver to Consumer
+Yes → Update Admin with Delivery Status
+No → Delivery failed or customer not available
+
+
+Update Admin
+Yes → Order Delivered
+No → Delivery status not updated in system
+
+
+Consumer: 
+Order Delivered
+Yes → Order Complete
+No → Customer refused or reported issue with delivery
+
+
+End

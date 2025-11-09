@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Farmer Signup</title>
+    <link rel="stylesheet" href="form.css">
+    <link rel ="shortcut icon" href="shortcut.jpeg" type="image/jpeg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="farmer-signup">
+
+    <form class="signup-form" id="farmerSignupForm">
+        <h2>Farmer Signup</h2>
+        <input type="text" id="kisanId" placeholder="Kisan Id (Use as Username)" required/>
+        <input type="text" id="fullName" placeholder="Full Name" required />
+        <input type="email" id="email" placeholder="Email Address" required />
+        <input type="tel" id="contactNumber" placeholder="Contact Number" required />
+        <input type="text" id="pinCode" placeholder="Pincode" required/>
+        <input type="text" id="farmLocation" placeholder="Farm Location / Village Name" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+
+        <button type="submit">Sign Up</button>
+
+        <p class="redirect">Already have an account? <a href="farmer_login.html">Login here</a></p>
+    </form>
+
+    <script>
+        document.getElementById('farmerSignupForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            // Get Form Values
+            const kisanId = document.getElementById('kisanId').value.trim();
+            const fullName = document.getElementById('fullName').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // 1. Validation Checks
+            if (password !== confirmPassword) {
+                alert("Error: Password and Confirm Password do not match.");
+                return;
+            }
+
+            // 2. Load existing farmers from Local Storage
+            let farmers = JSON.parse(localStorage.getItem('connectFramaFarmers')) || [];
+            
+            // 3. Check if Kisan ID already exists
+            if (farmers.some(farmer => farmer.kisanId === kisanId)) {
+                alert("Error: This Kisan ID is already registered. Please login or use a different ID.");
+                return;
+            }
+
+            // 4. Create new farmer object
+            const newFarmer = {
+                kisanId: kisanId,
+                fullName: fullName,
+                password: password,
+                products: [] // Array to store products later
+            };
+
+            // 5. Add new farmer and save to Local Storage
+            farmers.push(newFarmer);
+            localStorage.setItem('connectFramaFarmers', JSON.stringify(farmers));
+
+            alert(`Signup Successful! Your Kisan ID (${kisanId}) is now your Username.`);
+            window.location.href = "farmer_login.html";
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Farmer Signup</title>
+    <link rel="stylesheet" href="{% static 'form.css' %}">
+    <link rel ="shortcut icon" href="{% static 'shortcut.jpeg' %}" type="image/jpeg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+...
+<body class="farmer-signup">
+
+    {% if messages %}
+        <div style="padding: 10px; background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; margin-bottom: 15px; border-radius: 5px;">
+            {% for message in messages %}
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form class="signup-form" id="farmerSignupForm" method="POST" action="{% url 'farmer_signup' %}">
+        
+        {% csrf_token %}
+
+        <h2>Farmer Signup</h2>
+        <input type="text" id="kisanId" name="kisanId" placeholder="Kisan Id (Use as Username)" required/>
+        <input type="text" id="fullName" name="fullName" placeholder="Full Name" required />
+        <input type="email" id="email" name="email" placeholder="Email Address" required />
+        <input type="tel" id="contactNumber" name="contactNumber" placeholder="Contact Number" required />
+        <input type="text" id="pinCode" name="pinCode" placeholder="Pincode" required/>
+        <input type="text" id="farmLocation" name="farmLocation" placeholder="Farm Location / Village Name" required />
+        <input type="password" id="password" name="password" placeholder="Password" required />
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required />
+
+        <button type="submit">Sign Up</button>
+
+        <p class="redirect">Already have an account? <a href="{% url 'farmer_login' %}">Login here</a></p>
+    </form>
+
+    </body>
+</html>
+  

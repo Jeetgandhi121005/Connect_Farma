@@ -1,0 +1,127 @@
+/* General Body Styling */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: linear-gradient(to right, #e0ffe0, #ffffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background image layer (consumer) */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url('Images/c2b.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+  z-index: -1;
+}
+
+/* Background image layer (farmer) */
+body.farmer-login::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url('Images/f2b.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+  z-index: -1;}
+
+body.farmer-signup::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url('Images/f2b.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+  z-index: -1;
+}
+
+/* Form wrapper for login/signup */
+.login-form,
+.signup-form {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 300px;
+  z-index: 1;
+}
+
+/* Headings inside forms */
+.login-form h2,
+.signup-form h2 {
+  text-align: center;
+  color: #2e7d32;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Input fields */
+.login-form input,
+.signup-form input {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.login-form input:focus,
+.signup-form input:focus {
+  border-color: #388e3c;
+}
+
+/* Submit and other buttons */
+.login-form button,
+.signup-form button {
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #388e3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover,
+.signup-form button:hover {
+  background-color: #2e7d32;
+}
+
+/* Redirect link under form */
+.redirect {
+  text-align: center;
+  font-size: 0.9rem;
+}
+.redirect a {
+  color: #388e3c;
+  text-decoration: none;
+  font-weight: 600;
+}
+.redirect a:hover {
+  text-decoration: underline;
+}

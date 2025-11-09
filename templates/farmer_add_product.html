@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Products - Farmer Portal</title>
+    <link rel="icon" href="{% static 'intro.png' %}" type="image/png">
+    
+    <link rel="stylesheet" href="{% static 'consumer_home.css' %}"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Your CSS styles go here - no changes needed */
+        body {
+            background-color: #f7fff7;
+        }
+        .navbar {
+            background-color: #38761d; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar .logo {
+            color: #ffffff;
+        }
+        .nav-links a {
+            color: #d9ead3; 
+        }
+        .nav-links a:hover {
+            color: #AEEA00; 
+        }
+        .nav-links a.logout-btn {
+            background-color: #e6b800; 
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+        .page-header-section {
+            width: 90%;
+            max-width: 1000px;
+            margin: 100px auto 20px auto; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #6aa84f;
+            padding-bottom: 10px;
+        }
+        .page-greeting {
+            font-size: 2em;
+            color: #38761d;
+            font-weight: 700;
+            margin: 0;
+        }
+        .back-btn {
+            background-color: #f0f0f0;
+            color: #555;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .back-btn:hover {
+            background-color: #e0e0e0;
+        }
+        .product-form-container {
+            width: 90%;
+            max-width: 1000px; 
+            margin: 0 auto 50px auto; 
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .form-header {
+            font-size: 1.5em; 
+            color: #555;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .product-category {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #f9fff9;
+        }
+        .category-title {
+            font-size: 1.4em;
+            color: #38761d;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e0ffe0;
+        }
+        .product-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .product-list label {
+            display: block;
+            cursor: pointer;
+            font-weight: 500;
+            color: #333;
+        }
+        .product-list input[type="checkbox"] {
+            margin-right: 8px;
+            transform: scale(1.1);
+            accent-color: #6aa84f; 
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .action-buttons button,
+        .action-buttons a {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        #saveProduct {
+            background-color: #6aa84f;
+            color: white;
+        }
+        #saveProduct:hover {
+            background-color: #38761d;
+        }
+        #cancelButton {
+            background-color: #ccc;
+            color: #333;
+        }
+        #cancelButton:hover {
+            background-color: #bbb;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="{% static 'intro.png' %}" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">Farmer Connect</span>
+        </div>
+        <nav class="nav-links">
+            <a href="{% url 'farmer_dashboard' %}">Dashboard</a>
+            <a href="{% url 'farmer_products' %}" style="font-weight: bold;">My Products</a>
+            <a href="{% url 'farmer_orders' %}">Orders</a>
+            <a href="{% url 'farmer_payments' %}">Payments</a>
+            <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+        </nav>
+    </header>
+
+    <div class="page-header-section">
+        <h1 class="page-greeting" id="dynamicGreeting">Welcome, {{ user.first_name|default:'Farmer' }}!</h1>
+        <a href="{% url 'farmer_products' %}" class="back-btn">← Back to Inventory</a>
+    </div>
+    
+    <div class="product-form-container">
+        <h2 class="form-header">Select the products you currently sell and add them to your inventory.</h2>
+        
+        <form id="addProductForm" method="POST" action="{% url 'farmer_add_product' %}">
+            {% csrf_token %}
+            <div class="category-grid">
+                
+                <div class="product-category">
+                    <h3 class="category-title">Vegetables</h3>
+                    <div class="product-list">
+                        <label><input type="checkbox" name="product" value="Tomatoes"> Tomatoes</label>
+                        <label><input type="checkbox" name="product" value="Onions"> Onions</label>
+                        <label><input type="checkbox" name="product" value="Potatoes"> Potatoes</label>
+                        <label><input type="checkbox" name="product" value="Cabbage"> Cabbage</label>
+                        <label><input type="checkbox" name="product" value="Spinach"> Spinach</label>
+                        <label><input type="checkbox" name="product" value="Carrots"> Carrots</label>
+                        <label><input type="checkbox" name="product" value="Capsicum"> Capsicum</label>
+                        <label><input type="checkbox" name="product" value="Cauliflower"> Cauliflower</label>
+                        <label><input type="checkbox" name="product" value="Broccoli"> Broccoli</label>
+                        <label><input type="checkbox" name="product" value="Cucumber"> Cucumber</label>
+                        <label><input type="checkbox" name="product" value="Brinjal"> Brinjal</label>
+                        <label><input type="checkbox" name="product" value="Garlic"> Garlic</label>
+                        <label><input type="checkbox" name="product" value="Ginger"> Ginger</label>
+                        <label><input type="checkbox" name="product" value="Green Chilli"> Green Chilli</label>
+                        <label><input type="checkbox" name="product" value="Lemon"> Lemon</label>
+                    </div>
+                </div>
+
+                <div class="product-category">
+                    <h3 class="category-title">Fruits</h3>
+                    <div class="product-list">
+                        <label><input type="checkbox" name="product" value="Bananas"> Bananas</label>
+                        <label><input type="checkbox" name="product" value="Apples"> Apples</label>
+                        <label><input type="checkbox" name="product" value="Grapes"> Grapes</label>
+                        <label><input type="checkbox" name="product" value="Mangoes"> Mangoes</label>
+                        <label><input type="checkbox" name="product" value="Oranges"> Oranges</label>
+                        <label><input type="checkbox" name="product" value="Pineapple"> Pineapple</label>
+                        <label><input type="checkbox" name="product" value="Pomegranate"> Pomegranate</label>
+                        <label><input type="checkbox" name="product" value="Kiwi"> Kiwi</label>
+                        <label><input type="checkbox" name="product" value="Papaya"> Papaya</label>
+                        <label><input type="checkbox" name="product" value="Watermelon"> Watermelon</label>
+                        <label><input type="checkbox" name="product" value="Coconut"> Coconut</label>
+                        <label><input type="checkbox" name="product" value="Muskmelon"> Muskmelon</label>
+                        <label><input type="checkbox" name="product" value="Strawberry"> Strawberry</label>
+                        <label><input type="checkbox" name="product" value="Litchi"> Litchi</label>
+                        <label><input type="checkbox" name="product" value="Cherries"> Cherries</label>
+                    </div>
+                </div>
+
+                <div class="product-category">
+                    <h3 class="category-title">Grains & Pulses</h3>
+                    <div class="product-list">
+                        <label><input type="checkbox" name="product" value="Wheat (gehu)"> Wheat (gehu)</label>
+                        <label><input type="checkbox" name="product" value="Basmati rice"> Basmati rice</label>
+                        <label><input type="checkbox" name="product" value="Toor dal (arhar)"> Toor dal (arhar)</label>
+                        <label><input type="checkbox" name="product" value="Moong dal (yellow)"> Moong dal (yellow)</label>
+                        <label><input type="checkbox" name="product" value="Urad dal (split)"> Urad dal (split)</label>
+                        <label><input type="checkbox" name="product" value="Chana dal"> Chana dal</label>
+                        <label><input type="checkbox" name="product" value="Kidney beans (rajma)"> Kidney beans (rajma)</label>
+                        <label><input type="checkbox" name="product" value="Chickpeas (chhole)"> Chickpeas (chhole)</label>
+                        <label><input type="checkbox" name="product" value="Oats"> Oats</label>
+                        <label><input type="checkbox" name="product" value="Barley"> Barley</label>
+                        <label><input type="checkbox" name="product" value="Rye"> Rye</label>
+                        <label><input type="checkbox" name="product" value="Teff"> Teff</label>
+                        <label><input type="checkbox" name="product" value="Sorghum (jowar)"> Sorghum (jowar)</label>
+                        <label><input type="checkbox" name="product" value="Millet (bajra)"> Millet (bajra)</label>
+                        <label><input type="checkbox" name="product" value="Buckwheat"> Buckwheat</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="{% url 'farmer_dashboard' %}" id="cancelButton">Cancel</a>
+                <button type="submit" id="saveProduct">Confirm & Add to Inventory</button>
+            </div>
+        </form>
+    </div>
+
+    <footer class="footer">
+        © 2025 ConnectFrama Farmer Portal. All rights reserved.
+    </footer>
+
+    </body>
+</html>

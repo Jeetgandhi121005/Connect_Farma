@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard - ConnectFrama</title>
+    <link rel="icon" href="intro.png" type="image/png">
+    
+    <link rel="stylesheet" href="consumer_home.css"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* -------------------------------------------
+        FARMER SPECIFIC OVERRIDES (UI Consistency)
+        ------------------------------------------- 
+        */
+        body {
+            background-color: #f7fff7; 
+        }
+
+        /* Nav Bar Overrides (To show it's Farmer Portal) */
+        .navbar {
+            background-color: #38761d; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar .logo {
+            color: #ffffff; 
+        }
+        .nav-links a {
+            color: #d9ead3; 
+        }
+        .nav-links a:hover {
+            color: #AEEA00; 
+        }
+        .nav-links a.logout-btn {
+            background-color: #e6b800; 
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        /* Main Dashboard Content */
+        .dashboard-container {
+            width: 90%;
+            max-width: 1300px;
+            margin: 100px auto 50px auto; 
+            padding: 20px;
+        }
+        
+        .welcome-header {
+            font-size: 2.2em;
+            color: #38761d;
+            border-bottom: 3px solid #6aa84f;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Stat Cards (Reusing product-card look) */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        .stat-card {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #6aa84f; 
+        }
+        .stat-card h3 {
+            color: #555;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        .stat-card .value {
+            font-size: 2.8em;
+            font-weight: 800;
+            color: #38761d; 
+        }
+        .stat-card.products-live .value {
+             /* Dynamic update via JS */
+            color: #e6b800; /* Yellow for Product Count */
+        }
+
+        /* Main Sections */
+        .section-header {
+            font-size: 1.6em;
+            color: #38761d;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        /* Quick Action Button */
+        .quick-action-btn {
+            background-color: #AEEA00; 
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.3s;
+        }
+        .quick-action-btn:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Data Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .data-table th, .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #f8f8f8;
+            color: #38761d;
+            font-weight: 600;
+        }
+        
+        /* Empty Table Message */
+        .empty-table {
+            text-align: center;
+            color: #777;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="intro.png" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">Farmer Connect</span>
+        </div>
+        <nav class="nav-links">
+            <a href="farmer_dashboard.html" style="font-weight: bold;">Dashboard</a>
+            <a href="farmer_products.html">My Products</a>
+            <a href="farmer_orders.html">Orders</a>
+            <a href="farmer_py.html">Payments</a>
+            <a href="farmer_login.html" class="logout-btn">Logout</a>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="welcome-header">
+            <h1 id="welcome-message">Welcome Back to the Farmer Portal!</h1> 
+            <a href="farmer_add_product.html" class="quick-action-btn">+ Add New Product</a>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-card total-earnings">
+                <h3>Total Earnings (INR)</h3>
+                <div class="value" id="statEarnings">₹0</div> 
+            </div>
+            <div class="stat-card pending-orders">
+                <h3>Pending Orders</h3>
+                <div class="value" id="statPendingOrders">0</div>
+            </div>
+            <div class="stat-card products-live">
+                <h3>Products Live</h3>
+                <div class="value" id="statProductsLive">0</div>
+            </div>
+            <div class="stat-card last-payout">
+                <h3>Last Payout</h3>
+                <div class="value" id="statLastPayout">₹0</div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px;">
+            <div>
+                <h2 class="section-header">Recent Orders (Pending)</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Order Date</th>
+                            <th>Items</th>
+                            <th>Total Value</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentOrdersBody">
+                        <tr>
+                            <td colspan="6" class="empty-table">
+                                No new orders yet! List your products to start selling.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="text-align: right; margin-top: 15px;"><a href="farmer_orders.html" style="color: #38761d; text-decoration: none; font-weight: 600;">View All Orders →</a></p>
+            </div>
+
+            <div>
+                <h2 class="section-header">Low Stock Alert</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Stock (kg)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lowStockBody">
+                         <tr>
+                            <td colspan="3" class="empty-table">
+                                No products listed yet.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="text-align: right; margin-top: 15px;"><a href="farmer_products.html" style="color: #38761d; text-decoration: none; font-weight: 600;">Manage Inventory →</a></p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        © 2025 ConnectFrama Farmer Portal. All rights reserved.
+    </footer>
+
+    <script>
+        const LOGGED_IN_FARMER_KEY = 'loggedInFarmer';
+        const ALL_FARMERS_KEY = 'connectFramaFarmers';
+
+        function loadFarmerDetails() {
+            const loggedInFarmerData = localStorage.getItem(LOGGED_IN_FARMER_KEY);
+
+            if (!loggedInFarmerData) {
+                window.location.href = "farmer_login.html";
+                return;
+            }
+            
+            const farmer = JSON.parse(loggedInFarmerData);
+            
+            // 1. Personalized Greeting
+            const firstName = farmer.name.split(' ')[0];
+            document.getElementById('welcome-message').textContent = `Welcome Back, ${firstName}!`;
+
+            // 2. Load Stats (Simple stats for now, focusing on products)
+            const allFarmers = JSON.parse(localStorage.getItem(ALL_FARMERS_KEY)) || [];
+            const currentFarmer = allFarmers.find(f => f.kisanId === farmer.kisanId);
+            
+            if (currentFarmer && currentFarmer.products) {
+                const liveProducts = currentFarmer.products.filter(p => p.status === 'Live');
+                const lowStockProducts = currentFarmer.products.filter(p => p.stock > 0 && p.stock <= 5 && p.unit === 'kg'); // Low stock defined as <= 5kg
+
+                // Update Products Live Stat
+                document.getElementById('statProductsLive').textContent = liveProducts.length;
+
+                // Update Low Stock Table
+                renderLowStock(lowStockProducts);
+            }
+            // Other stats (Orders, Earnings) remain 0 as we haven't built order logic yet.
+        }
+
+        function renderLowStock(lowStockProducts) {
+            const tableBody = document.getElementById('lowStockBody');
+            tableBody.innerHTML = '';
+
+            if (lowStockProducts.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="3" class="empty-table">All your products are in good stock!</td></tr>`;
+                return;
+            }
+
+            lowStockProducts.forEach(product => {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.stock} ${product.unit}</td>
+                    <td><a href="farmer_products.html" style="color: #e6b800; font-weight: 600; text-decoration: none;">Update Stock</a></td>
+                `;
+            });
+        }
+
+
+        // Logout handler
+        document.querySelector('.logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem(LOGGED_IN_FARMER_KEY);
+            window.location.href = 'farmer_login.html';
+        });
+
+        document.addEventListener('DOMContentLoaded', loadFarmerDetails);
+    </script>
+</body>
+</html>

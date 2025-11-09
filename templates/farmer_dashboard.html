@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard - ConnectFrama</title>
+    <link rel="icon" href="{% static 'intro.png' %}" type="image/png">
+    
+    <link rel="stylesheet" href="{% static 'consumer_home.css' %}"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* All your CSS <style> content stays exactly the same */
+        body {
+            background-color: #f7fff7; 
+        }
+        .navbar {
+            background-color: #38761d; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar .logo {
+            color: #ffffff; 
+        }
+        .nav-links a {
+            color: #d9ead3; 
+        }
+        .nav-links a:hover {
+            color: #AEEA00; 
+        }
+        .nav-links a.logout-btn {
+            background-color: #e6b800; 
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+        .dashboard-container {
+            width: 90%;
+            max-width: 1300px;
+            margin: 100px auto 50px auto; 
+            padding: 20px;
+        }
+        .welcome-header {
+            font-size: 2.2em;
+            color: #38761d;
+            border-bottom: 3px solid #6aa84f;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        .stat-card {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #6aa84f; 
+        }
+        .stat-card h3 {
+            color: #555;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        .stat-card .value {
+            font-size: 2.8em;
+            font-weight: 800;
+            color: #38761d; 
+        }
+        .stat-card.products-live .value {
+            color: #e6b800;
+        }
+        .section-header {
+            font-size: 1.6em;
+            color: #38761d;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .quick-action-btn {
+            background-color: #AEEA00; 
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.3s;
+        }
+        .quick-action-btn:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .data-table th, .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #f8f8f8;
+            color: #38761d;
+            font-weight: 600;
+        }
+        .empty-table {
+            text-align: center;
+            color: #777;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="{% static 'intro.png' %}" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">Farmer Connect</span>
+        </div>
+        <nav class="nav-links">
+            <a href="{% url 'farmer_dashboard' %}" style="font-weight: bold;">Dashboard</a>
+            <a href="{% url 'farmer_products' %}">My Products</a>
+            <a href="{% url 'farmer_orders' %}">Orders</a>
+            <a href="{% url 'farmer_payments' %}">Payments</a>
+            <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="welcome-header">
+            <h1 id="welcome-message">Welcome Back, {{ user.first_name }}!</h1> 
+            <a href="{% url 'farmer_add_product' %}" class="quick-action-btn">+ Add New Product</a>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-card total-earnings">
+                <h3>Total Earnings (INR)</h3>
+                <div class="value" id="statEarnings">₹{{ total_earnings|floatformat:2 }}</div> 
+            </div>
+            <div class="stat-card pending-orders">
+                <h3>Pending Orders</h3>
+                <div class="value" id="statPendingOrders">{{ pending_orders_count }}</div>
+            </div>
+            <div class="stat-card products-live">
+                <h3>Products Live</h3>
+                <div class="value" id="statProductsLive">{{ live_products_count }}</div>
+            </div>
+            <div class="stat-card last-payout">
+                <h3>Last Payout</h3>
+                <div class="value" id="statLastPayout">₹0</div> </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px;">
+            <div>
+                <h2 class="section-header">Recent Orders (Pending)</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Order Date</th>
+                            <th>Items</th>
+                            <th>Total Value</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentOrdersBody">
+                        <tr>
+                            <td colspan="6" class="empty-table">
+                                No new orders yet!
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="text-align: right; margin-top: 15px;"><a href="{% url 'farmer_orders' %}" style="color: #38761d; text-decoration: none; font-weight: 600;">View All Orders →</a></p>
+            </div>
+
+            <div>
+                <h2 class="section-header">Low Stock Alert</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Stock</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lowStockBody">
+                        {% if not low_stock_products %}
+                         <tr>
+                            <td colspan="3" class="empty-table">
+                                All your products are in good stock!
+                            </td>
+                        </tr>
+                        {% else %}
+                            {% for product in low_stock_products %}
+                            <tr>
+                                tD>{{ product.name }}</td>
+                                <td>{{ product.stock }} {{ product.unit }}</td>
+                                <td><a href="{% url 'farmer_products' %}" style="color: #e6b800; font-weight: 600; text-decoration: none;">Update</a></td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+                <p style="text-align: right; margin-top: 15px;"><a href="{% url 'farmer_products' %}" style="color: #38761d; text-decoration: none; font-weight: 600;">Manage Inventory →</a></p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        © 2025 ConnectFrama Farmer Portal. All rights reserved.
+    </footer>
+
+    </body>
+</html>

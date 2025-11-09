@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Products - Farmer Portal</title>
+    <link rel="icon" href="intro.png" type="image/png">
+    
+    <link rel="stylesheet" href="consumer_home.css"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* -------------------------------------------
+        PAGE SPECIFIC STYLES (Matching Dashboard UI)
+        ------------------------------------------- 
+        */
+        body {
+            background-color: #f7fff7;
+        }
+
+        /* Nav Bar styles remain the same */
+        .navbar {
+            background-color: #38761d; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar .logo {
+            color: #ffffff;
+        }
+        .nav-links a {
+            color: #d9ead3; 
+        }
+        .nav-links a:hover {
+            color: #AEEA00; 
+        }
+        .nav-links a.logout-btn {
+            background-color: #e6b800; 
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        /* Page Header */
+        .page-header-section {
+            width: 90%;
+            max-width: 1400px; 
+            margin: 100px auto 20px auto; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #6aa84f;
+            padding-bottom: 10px;
+        }
+        
+        .page-greeting {
+            font-size: 2em;
+            color: #38761d;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* Add Product Button */
+        .add-product-btn {
+            background-color: #AEEA00;
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.3s;
+        }
+        .add-product-btn:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Inventory Table Container */
+        .inventory-container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto 50px auto; 
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        /* Product Table Styling */
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .product-table th, .product-table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .product-table th {
+            background-color: #f8f8f8;
+            color: #38761d;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .product-table tr:hover {
+            background-color: #fcfcfc;
+        }
+        
+        /* Input Fields in Table */
+        .product-table input[type="number"],
+        .product-table select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 80px; 
+        }
+        .product-table select {
+            width: 100px;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .status-draft {
+            background-color: #fff9c4; 
+            color: #fbc02d;
+        }
+        .status-live {
+            background-color: #c8e6c9; 
+            color: #388e3c;
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            margin-right: 5px;
+            white-space: nowrap;
+        }
+        .save-btn {
+            background-color: #6aa84f;
+            color: white;
+        }
+        .save-btn:hover {
+            background-color: #38761d;
+        }
+        .delete-btn {
+            background-color: #ffcdd2;
+            color: #d32f2f;
+        }
+        .delete-btn:hover {
+            background-color: #ef9a9a;
+        }
+
+        /* Empty State Message */
+        .empty-inventory {
+            text-align: center;
+            padding: 50px;
+            color: #777;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="intro.png" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">Farmer Connect</span>
+        </div>
+        <nav class="nav-links">
+            <a href="farmer_dashboard.html">Dashboard</a>
+            <a href="farmer_products.html" style="font-weight: bold;">My Products</a>
+            <a href="farmer_orders.html">Orders</a>
+            <a href="farmer_py.html">Payments</a>
+            <a href="farmer_login.html" class="logout-btn">Logout</a>
+        </nav>
+    </header>
+
+    <div class="page-header-section">
+        <h1 class="page-greeting">My Inventory (Manage Products)</h1>
+        <a href="farmer_add_product.html" class="add-product-btn">+ Add More Products</a>
+    </div>
+
+    <div class="inventory-container">
+        <table class="product-table" id="inventoryTable">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Price (₹)</th>
+                    <th>Unit</th>
+                    <th>Stock Available</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="productTableBody">
+                </tbody>
+        </table>
+    </div>
+
+    <footer class="footer">
+        © 2025 ConnectFrama Farmer Portal. All rights reserved.
+    </footer>
+
+    <script>
+        const LOGGED_IN_FARMER_KEY = 'loggedInFarmer';
+        const ALL_FARMERS_KEY = 'connectFramaFarmers';
+
+        let currentKisanId = null;
+        let allFarmers = [];
+
+        // Helper function to find and save all farmer data
+        function saveAllFarmers() {
+            localStorage.setItem(ALL_FARMERS_KEY, JSON.stringify(allFarmers));
+        }
+
+        // --- 1. RENDER FUNCTION ---
+        function renderProducts(farmerProducts) {
+            const tableBody = document.getElementById('productTableBody');
+            tableBody.innerHTML = ''; 
+
+            if (!farmerProducts || farmerProducts.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="6" class="empty-inventory">
+                    Your inventory is empty! Click '+ Add More Products' to list items.
+                </td></tr>`;
+                return;
+            }
+
+            farmerProducts.forEach(product => {
+                const row = tableBody.insertRow();
+                row.dataset.productId = product.id; 
+
+                // 1. Product Name (Static)
+                row.insertCell().textContent = product.name;
+                
+                // 2. Price (Editable Input)
+                const priceCell = row.insertCell();
+                priceCell.innerHTML = `<input type="number" value="${product.price}" min="0" step="0.01" data-field="price">`;
+                
+                // 3. Unit (Editable Select)
+                const unitCell = row.insertCell();
+                unitCell.innerHTML = `
+                    <select data-field="unit">
+                        <option value="kg" ${product.unit === 'kg' ? 'selected' : ''}>kg</option>
+                        <option value="doz" ${product.unit === 'doz' ? 'selected' : ''}>doz</option>
+                        <option value="pc" ${product.unit === 'pc' ? 'selected' : ''}>pc</option>
+                        <option value="bunch" ${product.unit === 'bunch' ? 'selected' : ''}>bunch</option>
+                    </select>`;
+
+                // 4. Stock Available (Editable Input) 
+                const stockCell = row.insertCell();
+                stockCell.innerHTML = `<input type="number" value="${product.stock}" min="0" data-field="stock">`;
+
+                // 5. Status Badge
+                const statusCell = row.insertCell();
+                const statusClass = product.status.includes('Draft') ? 'status-draft' : 'status-live';
+                statusCell.innerHTML = `<span class="status-badge ${statusClass}">${product.status}</span>`;
+
+                // 6. Actions (Save/Delete Buttons)
+                const actionCell = row.insertCell();
+                actionCell.innerHTML = `
+                    <button class="action-btn save-btn" onclick="handleSave('${product.id}')">Save</button>
+                    <button class="action-btn delete-btn" onclick="handleDelete('${product.id}')">Delete</button>
+                `;
+            });
+        }
+
+        // --- 2. ACTION HANDLERS ---
+        
+        // Save/Update Product details
+        function handleSave(productId) {
+            const row = document.querySelector(`tr[data-product-id="${productId}"]`);
+            if (!row) return;
+
+            // Collect updated values from inputs
+            const newPrice = parseFloat(row.querySelector('input[data-field="price"]').value);
+            const newUnit = row.querySelector('select[data-field="unit"]').value;
+            const newStock = parseInt(row.querySelector('input[data-field="stock"]').value);
+
+            if (isNaN(newPrice) || newPrice < 0) {
+                alert("Please enter a valid Price (>= 0).");
+                return;
+            }
+            if (isNaN(newStock) || newStock < 0) {
+                alert("Please enter a valid Stock (>= 0).");
+                return;
+            }
+
+            // Find current farmer's data
+            const farmerIndex = allFarmers.findIndex(f => f.kisanId === currentKisanId);
+            const productIndex = allFarmers[farmerIndex].products.findIndex(p => p.id === productId);
+
+            if (productIndex !== -1) {
+                // Update the product object
+                allFarmers[farmerIndex].products[productIndex].price = newPrice;
+                allFarmers[farmerIndex].products[productIndex].unit = newUnit;
+                allFarmers[farmerIndex].products[productIndex].stock = newStock;
+                
+                // Set status based on values
+                if (newPrice > 0 && newStock > 0) {
+                    allFarmers[farmerIndex].products[productIndex].status = 'Live';
+                } else if (newPrice > 0 && newStock === 0) {
+                    allFarmers[farmerIndex].products[productIndex].status = 'Live (Out of Stock)';
+                } else {
+                    allFarmers[farmerIndex].products[productIndex].status = 'Draft (Needs Price/Stock)';
+                }
+                
+                saveAllFarmers();
+                alert(`Product "${allFarmers[farmerIndex].products[productIndex].name}" updated successfully!`);
+                
+                // Re-render table to update status badge
+                renderProducts(allFarmers[farmerIndex].products);
+            }
+        }
+
+        // Delete Product
+        function handleDelete(productId) {
+            if (!confirm("Are you sure you want to remove this product from your inventory?")) {
+                return;
+            }
+
+            const farmerIndex = allFarmers.findIndex(f => f.kisanId === currentKisanId);
+            
+            if (farmerIndex !== -1) {
+                // Filter out the product to be deleted
+                allFarmers[farmerIndex].products = allFarmers[farmerIndex].products.filter(p => p.id !== productId);
+                
+                saveAllFarmers();
+                alert("Product removed from inventory.");
+                
+                // Re-render table
+                renderProducts(allFarmers[farmerIndex].products);
+            }
+        }
+
+        // --- 3. INITIAL LOAD ---
+        function loadInventory() {
+            const loggedInFarmerData = localStorage.getItem(LOGGED_IN_FARMER_KEY);
+
+            if (!loggedInFarmerData) {
+                window.location.href = "farmer_login.html"; 
+                return;
+            }
+            
+            currentKisanId = JSON.parse(loggedInFarmerData).kisanId;
+            allFarmers = JSON.parse(localStorage.getItem(ALL_FARMERS_KEY)) || [];
+            
+            const currentFarmer = allFarmers.find(f => f.kisanId === currentKisanId);
+
+            if (currentFarmer) {
+                renderProducts(currentFarmer.products);
+            } else {
+                window.location.href = "farmer_login.html"; 
+            }
+        }
+        
+        // Logout handler (reusing dashboard logic)
+        document.querySelector('.logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem(LOGGED_IN_FARMER_KEY);
+            window.location.href = 'farmer_login.html';
+        });
+
+        document.addEventListener('DOMContentLoaded', loadInventory);
+    </script>
+</body>
+</html>

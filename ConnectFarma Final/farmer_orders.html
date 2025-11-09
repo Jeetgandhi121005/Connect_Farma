@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Farmer Orders</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    th { background: green; color: #fff; }
+  </style>
+</head>
+<body>
+  <h2>Orders Received</h2>
+  <table>
+    <tr>
+      <th>Order ID</th>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Total Price</th>
+      <th>Status</th>
+    </tr>
+    <tbody id="orderTable"></tbody>
+  </table>
+
+  <script>
+    // Example: consumer orders (yeh backend/API se aayenge baad me)
+    let orders = [
+      {id: 101, product: "Tomatoes", qty: 10, price: 200, status: "Pending"},
+      {id: 102, product: "Potatoes", qty: 5, price: 800, status: "Confirmed"},
+      {id: 103, product: "Milk", qty: 5, price: 135, status: "Delivered"},
+      {id: 104, product: "Cabbage", qty: 8, price: 356, status: "Delivered"},
+      {id: 105, product: "Ghee", qty: 3, price: 1600, status: "Pending"},
+      {id: 106, product: "Onions", qty: 3, price: 934, status: "Delivered"},
+      {id: 107, product: "Tomato", qty: 4, price: 97, status: "Delivered"}
+    ];
+
+    let table = document.getElementById("orderTable");
+    orders.forEach(o => {
+      let row = `<tr>
+        <td>${o.id}</td>
+        <td>${o.product}</td>
+        <td>${o.qty} kg</td>
+        <td>${o.price} Rs</td>
+        <td>${o.status}</td>
+      </tr>`;
+      table.innerHTML += row;
+    });
+  </script>
+</body>
+</html>

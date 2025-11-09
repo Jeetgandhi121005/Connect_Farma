@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ConnectFarma</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+  <link rel="stylesheet" href="{% static 'loader.css'%}" />
+  <link rel ="shortcut icon" href="{% static 'shortcut.jpeg' %}" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- ✅ LOADER SCREEN -->
+  <div class="loader-overlay" id="loader">
+    <img src="{% static 'intro.png' %}" class="loader-logo" />
+    <p class="loader-text">Connecting Farmers and Consumers...</p>
+    <div class="spinner"></div>
+  </div>
+    
+  <!-- ✅ MAIN SITE -->
+  <div class="logo">
+    <img src="{% static 'Images/logo.png' %}" alt="ConnectFarma Logo" />
+  </div>
+
+  <h1>Welcome to ConnectFarma</h1>
+  <h4 class="tagline">Bringing Farms to Families</h4>
+  <div class="choice-container" id="choiceContainer">
+    <div class="card">
+     <a href="{% url 'consumer_signup' %}">
+        <h2>Consumer</h2>
+        <img src="{% static 'Images/consumer.jpg'%}" alt="Consumer Image" />
+      </a>
+    </div>
+    <div class="card">
+      <a href="{% url 'farmer_signup' %}">
+        <h2>Join as Farmer</h2>
+        <img src="{% static 'Images/farmer.jpg'%}" alt="Farmer Image" />
+      </a>
+    </div>
+  </div>
+
+  <script src="{% static 'script.js' %}"></script>
+  <script src="{% static 'loader.js' %}"></script>
+</body>
+</html>

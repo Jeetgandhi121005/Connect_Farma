@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farmer Login</title>
+    <link rel="stylesheet" href="form.css">
+    <link rel ="shortcut icon" href="shortcut.jpeg" type="image/jpeg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="farmer-login">
+
+    <form class="login-form" id="farmerForm"> 
+        <h2>Farmer Login</h2>
+        <input type="text" id="farmerUsername" placeholder="Kisan ID / Username" required />
+        <input type="password" id="farmerPassword" placeholder="Password" required />
+        <button type="submit">Login</button>
+        <p class="redirect">Don't have an account? <a href="farmer_signup.html">Sign Up</a></p>
+    </form>
+    
+    <script>
+        document.getElementById('farmerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            
+            const username = document.getElementById('farmerUsername').value.trim();
+            const password = document.getElementById('farmerPassword').value;
+            
+            // 1. Load existing farmers
+            const farmers = JSON.parse(localStorage.getItem('connectFramaFarmers')) || [];
+            
+            // 2. Find the farmer
+            const foundFarmer = farmers.find(f => f.kisanId === username);
+
+            if (foundFarmer && foundFarmer.password === password) {
+                
+                // 3. Store the logged-in user's data (without name personalization)
+                localStorage.setItem('loggedInFarmer', JSON.stringify({ kisanId: foundFarmer.kisanId })); 
+
+                alert(`Welcome back! Login Successful. Redirecting to Farmer Portal.`);
+                window.location.href = "farmer_dashboard.html"; 
+            } else {
+                alert("Invalid Kisan ID or Password. Please try again or Sign Up.");
+                document.getElementById('farmerPassword').value = '';
+            }
+        });
+    </script>
+</body>
+</html>

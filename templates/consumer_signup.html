@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Consumer Signup</title>
+  <link rel="stylesheet" href=" {% static 'form.css' %}">
+  <link rel ="shortcut icon" href=" {% static 'shortcut.jpeg' %}" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+    {% if messages %}
+        <div style="padding: 10px; background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; margin-bottom: 15px; border-radius: 5px;">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form class="signup-form" id="consumerSignupForm" method="POST" action="{% url 'consumer_signup' %}">
+        {% csrf_token %}
+
+        <h2>Consumer Signup</h2>
+        
+        <input type="text" placeholder="Full Name" name="fullName" required />
+        <input type="email" placeholder="Email Address" name="email" required />
+        <input type="tel" placeholder="Contact Number" name="contactNumber" required />
+        <input type="password" placeholder="Password" name="password" required />
+        <input type="password" placeholder="Confirm Password" name="confirmPassword" required />
+        
+        <button type="submit">Sign Up</button>
+    
+        <p class="redirect">Already have an account? <a href="{% url 'consumer_login' %}">Login here</a></p>
+    </form>
+    
+    </body>
+</html>
+

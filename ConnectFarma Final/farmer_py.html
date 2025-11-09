@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Farmer Payments</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    th { background: green; color: #fff; }
+  </style>
+</head>
+<body>
+  <h2>Payment Status</h2>
+  <table>
+    <tr>
+      <th>Payment ID</th>
+      <th>Order ID</th>
+      <th>Amount</th>
+      <th>Status</th>
+      <th>Date</th>
+    </tr>
+    <tbody id="paymentTable"></tbody>
+  </table>
+
+  <script>
+    // Example payments (future me backend se fetch karna hoga)
+    let payments = [
+      {pid: "P001", orderId: 101, amount: 200, status: "Pending", date: "2025-10-04"},
+      {pid: "P002", orderId: 102, amount: 800, status: "Completed", date: "2025-10-03"},
+      {pid: "P003", orderId: 103, amount: 135, status: "Completed", date: "2025-10-04"},
+      {pid: "P004", orderId: 104, amount: 356, status: "Completed", date: "2025-09-29"},
+      {pid: "P005", orderId: 105, amount: 1600, status: "Pending", date: "2025-09-30"},
+      {pid: "P006", orderId: 106, amount: 934, status: "Completed", date: "2025-10-03"},
+      {pid: "P007", orderId: 107, amount: 97, status: "Completed", date: "2025-10-01"}
+    ];
+
+    let table = document.getElementById("paymentTable");
+    payments.forEach(p => {
+      let row = `<tr>
+        <td>${p.pid}</td>
+        <td>${p.orderId}</td>
+        <td>${p.amount} Rs</td>
+        <td>${p.status}</td>
+        <td>${p.date}</td>
+      </tr>`;
+      table.innerHTML += row;
+    });
+  </script>
+</body>
+</html>

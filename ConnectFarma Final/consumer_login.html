@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consumer Login</title>
+  <link rel="stylesheet" href="form.css">
+  <link rel ="shortcut icon" href="shortcut.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <form class="login-form" id="consumerForm" onsubmit="return handleLogin(event, 'consumer')">
+    <h2>Consumer Login</h2>
+    <input type="text" id="consumerUsername" placeholder="Username" required />
+    <input type="password" id="consumerPassword" placeholder="Password" required />
+    <button type="submit">Login</button>
+    <p class="redirect">Don't have an account? <a href="/consumer_signup.html">Sign Up</a></p>
+  </form>
+
+  <script>
+    function handleLogin(event, userType) {
+      event.preventDefault();
+
+      const username = document.getElementById('consumerUsername').value;
+      const password = document.getElementById('consumerPassword').value;
+      
+      if (username && password) {
+        window.location.href = "consumer_home.html";
+      } else {
+        alert("Invalid username or password.");
+      }
+
+      return false;
+    }
+  </script>
+</body>
+</html>

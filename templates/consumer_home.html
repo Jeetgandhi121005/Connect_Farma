@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumer Home</title>
+    <link rel="stylesheet" href="{% static 'consumer_home.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    
+
+    <style>
+        /* --- Floating Cart Summary --- */
+        .floating-cart-summary {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #f7f7f7;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 250px;
+            text-align: center;
+        }
+        .floating-cart-summary h3 { margin-top: 0; color: #333; font-size: 18px; }
+        #cart-item-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            display: block;
+            margin-bottom: 10px;
+        }
+        #review-checkout-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        #review-checkout-btn:hover { background-color: #45a049; }
+        
+        /* Product Controls */
+        .product-controls { display: flex; flex-direction: column; align-items: center; }
+        .quantity-control {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .qty-btn { padding: 5px 10px; }
+        .qty-value {
+            padding: 5px 15px;
+            border: 1px solid #ccc;
+            min-width: 20px;
+            text-align: center;
+            margin: 0 5px;
+        }
+
+        /* --- STYLES FOR SEARCH BAR --- */
+        .search-bar-container {
+            flex-grow: 1;
+            margin: 0 20px;
+            max-width: 500px;
+        }
+        .search-bar-container form {
+            display: flex;
+            width: 100%;
+        }
+        .search-bar-container input[type="text"] {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 1em;
+            border-radius: 6px 0 0 6px;
+            border: 1px solid #ccc;
+            border-right: none;
+        }
+        .search-bar-container button {
+            padding: 10px 15px;
+            background: #6aa84f;
+            color: white;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* --- 
+            NEW STYLE FOR HIGHLIGHTED CARD 
+        --- */
+        .product-card.highlighted {
+            border: 3px solid #AEEA00; /* Your theme's lime green */
+            box-shadow: 0 0 15px rgba(174, 234, 0, 0.7); /* Matching glow */
+            transform: scale(1.03); /* Make it pop */
+        }
+
+    </style>
+    
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="{% static 'intro.png' %}" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">ConnectFrama</span>
+        </div>
+
+        <div class="search-bar-container">
+            <form method="GET" action="{% url 'consumer_home' %}">
+                <input type="text" name="q" placeholder="Search for Products..." value="{{ search_query|default:'' }}">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <nav class="nav-links">
+            <a href="{% url 'consumer_home' %}">Home</a>
+            <a href="{% url 'about_us' %}">About Us</a>
+            <a href="{% url 'cart_view' %}">Cart</a>
+            <a href="#contact-us-section" class="scroll-link">Contact Us</a>
+            <a href="{% url 'reviews' %}">Reviews</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </nav> 
+    </header>
+
+    <marquee behavior="scroll" direction="left" 
+    style="background:#ffefc1; color:#090908; padding:10px; 
+    font-weight:bold; font-size:18px; border:1px solid #ccc;">
+       Welcome to ConnectFarma
+    </marquee> 
+
+    <main class="hero-section">
+        <div class="hero-content">
+            <h1>Connecting Farms to Your Family</h1>
+            <p style="font-family: 'Roboto Slab', serif; margin-bottom: 20px;">Straight from the Farm, Straight to your Home.</p>
+            <a href="#main-content-start" class="shop-now-btn scroll-link">Shop Now</a>
+        </div>
+    </main>
+    
+
+    <main class="main-content" id="main-content-start">
+        
+        {% if request.GET.q and not vegetables and not fruits and not dairy and not grains %}
+        <div style="text-align: center; padding: 50px; background: #fff; border: 1px solid #eee; border-radius: 8px; margin: 20px auto; max-width: 1200px;">
+            <h2 style="color: #38761d;">No Results Found</h2>
+            <p style="font-size: 1.2em; color: #616161;">We couldn't find any products matching "<strong>{{ search_query }}</strong>".</p>
+        </div>
+        {% endif %}
+
+        <section class="category-section" data-category="Vegetables">
+            <h2>Vegetables</h2>
+            <div class="product-grid">
+                {% for product in vegetables %}
+                <div class="product-card" 
+                     data-name="{{ product.name }}" 
+                     data-price="{{ product.price }}" 
+                     data-unit="{{ product.unit }}"
+                     data-id="{{ product.id }}"> 
+                    
+                    {% if product.image_path %}
+                        <img src="{% static product.image_path %}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'Images/logo.png' %}" alt="No image">
+                    {% endif %}
+                        
+                    <h3>{{ product.name }}</h3>
+                    <p class="price">₹{{ product.price }}/{{ product.unit }}</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus" data-action="decrease">-</button>
+                            <span class="qty-value">0</span> 
+                            <button class="qty-btn plus" data-action="increase">+</button>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                    {% if not request.GET.q %} <p>No vegetables available right now.</p>
+                    {% endif %}
+                {% endfor %}
+           </div>
+        </section> 
+                
+        <section class="category-section" data-category="Fruits">
+            <h2>Fruits</h2>
+            <div class="product-grid">
+                {% for product in fruits %}
+                <div class="product-card" 
+                     data-name="{{ product.name }}" 
+                     data-price="{{ product.price }}" 
+                     data-unit="{{ product.unit }}"
+                     data-id="{{ product.id }}">
+                    
+                    {% if product.image_path %}
+                        <img src="{% static product.image_path %}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'Images/logo.png' %}" alt="No image">
+                    {% endif %}
+                        
+                    <h3>{{ product.name }}</h3>
+                    <p class="price">₹{{ product.price }}/{{ product.unit }}</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus" data-action="decrease">-</button>
+                            <span class="qty-value">0</span> 
+                            <button class="qty-btn plus" data-action="increase">+</button>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                    {% if not request.GET.q %}
+                    <p>No fruits available right now.</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+             
+        <section class="category-section" data-category="Dairy">
+            <h2>Dairy</h2>
+            <div class="product-grid">
+                {% for product in dairy %}
+                <div class="product-card" 
+                     data-name="{{ product.name }}" 
+                     data-price="{{ product.price }}" 
+                     data-unit="{{ product.unit }}"
+                     data-id="{{ product.id }}">
+                    
+                    {% if product.image_path %}
+                        <img src="{% static product.image_path %}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'Images/logo.png' %}" alt="No image">
+                    {% endif %}
+                        
+                    <h3>{{ product.name }}</h3>
+                    <p class="price">₹{{ product.price }}/{{ product.unit }}</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus" data-action="decrease">-</button>
+                            <span class="qty-value">0</span> 
+                            <button class="qty-btn plus" data-action="increase">+</button>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                    {% if not request.GET.q %}
+                    <p>No dairy products available right now.</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="category-section" data-category="Grains">
+            <h2>Grains & Pulses</h2>
+            <div class="product-grid">
+                {% for product in grains %}
+                <div class="product-card" 
+                     data-name="{{ product.name }}" 
+                     data-price="{{ product.price }}" 
+                     data-unit="{{ product.unit }}"
+                     data-id="{{ product.id }}">
+                    
+                    {% if product.image_path %}
+                        <img src="{% static product.image_path %}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'Images/logo.png' %}" alt="No image">
+                    {% endif %}
+                        
+                    <h3>{{ product.name }}</h3>
+                    <p class="price">₹{{ product.price }}/{{ product.unit }}</p>
+                    <div class="product-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn minus" data-action="decrease">-</button>
+                            <span class="qty-value">0</span> 
+                            <button class="qty-btn plus" data-action="increase">+</button>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                    {% if not request.GET.q %}
+                    <p>No grains or pulses available right now.</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+        
+    </main>
+
+    <div class="floating-cart-summary">
+        <h3>Your Cart</h3>
+        <span id="cart-item-count">0 items selected</span>
+        <button id="review-checkout-btn">Review & Checkout</button>
+    </div>
+    
+     <div id="contact-us-section" class="contact-us-container animate-on-scroll fade-up">
+        <h2 class="animate-on-scroll slide-left">Get In Touch</h2>
+        <p class="animate-on-scroll fade-up" style="text-align: center; font-size: 1.2em; color: #555; margin-bottom: 40px;">Have questions or feedback? We'd love to hear from you!</p>
+
+        <div class="contact-grid">
+            <div class="contact-info animate-on-scroll fade-up">
+                <h3>Our Details</h3>
+                <p><strong>Email:</strong> <a href="mailto:saiyamshah1304@gmail.com" class="highlight-link">support@connectframa.com</a></p>
+                <p><strong>Phone:</strong> +91 9879603279</p>
+                <p><strong>Head Office:</strong> Orchid Business Center, 7th Floor Tower A, GIFT City, Gandhinagar, Gujarat 382355 India</p>
+            </div>
+        
+            <form class="contact-form animate-on-scroll slide-left">
+                <h3>Send Us a Message</h3>
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="Your Message" rows="4" required></textarea>
+                <button type="submit" class="submit-button">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+
+    <footer class="footer">
+        © 2025 ConnectFrama. All rights reserved.
+    </footer>
+    
+    <script>
+    // Get the CSRF token for making secure POST requests
+    const csrfToken = '{{ csrf_token }}';
+    
+    let cart = {};
+    const checkoutButton = document.getElementById('review-checkout-btn');
+    const itemCountSpan = document.getElementById('cart-item-count');
+
+    async function updateServerCart(productId, quantity) {
+        try {
+            const response = await fetch("{% url 'update_cart' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    'product_id': productId,
+                    'quantity': quantity
+                })
+            });
+            const data = await response.json();
+            if (data.status === 'success') {
+                console.log('Cart updated on server');
+                updateCartSummary();
+            }
+        } catch (error) {
+            console.error('Error updating cart:', error);
+        }
+    }
+
+    function updateCartSummary() {
+        let totalItems = 0;
+        let uniqueItems = 0;
+        for (const qty of Object.values(cart)) {
+            totalItems += qty;
+            if (qty > 0) uniqueItems++;
+        }
+        itemCountSpan.textContent = `${totalItems} item${totalItems !== 1 ? 's' : ''} selected`;
+        if (totalItems > 0) {
+            checkoutButton.style.backgroundColor = '#4CAF50';
+            checkoutButton.textContent = `Review & Checkout (${uniqueItems} items)`;
+        } else {
+            checkoutButton.style.backgroundColor = '#6c757d';
+            checkoutButton.textContent = 'Review & Checkout';
+        }
+    }
+
+    document.querySelectorAll('.qty-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const card = this.closest('.product-card');
+            const productId = card.dataset.id;
+            const valueSpan = card.querySelector('.qty-value');
+            let quantity = parseInt(cart[productId] || 0);
+
+            if (this.dataset.action === 'increase') {
+                quantity++;
+            } else if (this.dataset.action === 'decrease' && quantity > 0) {
+                quantity--;
+            }
+            
+            cart[productId] = quantity;
+            valueSpan.textContent = quantity;
+            updateServerCart(productId, quantity);
+        });
+    });
+
+    checkoutButton.addEventListener('click', function() {
+        window.location.href = "{% url 'cart_view' %}";
+    });
+
+    function initializeQuantities() {
+        const sessionCart = {{ request.session.cart|default:'{}'|safe }};
+        cart = sessionCart;
+        document.querySelectorAll('.product-card').forEach(card => {
+            const productId = card.dataset.id;
+            const quantity = parseInt(cart[productId] || 0);
+            card.querySelector('.qty-value').textContent = quantity;
+        });
+        updateCartSummary();
+    }
+    
+    // We add the cart initialization to the main DOMContentLoaded listener below
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // --- 1. Run Cart Initialization ---
+        initializeQuantities(); 
+
+        // --- 2. NEW: Highlighting & Scroll Logic ---
+        const query = "{{ search_query|default:''|escapejs }}"; 
+        
+        if (query) {
+            const allCards = document.querySelectorAll('.product-card');
+            let firstMatch = null;
+            
+            // Loop over all cards to find matches
+            allCards.forEach(card => {
+                const productName = card.dataset.name.toLowerCase();
+                
+                if (productName.includes(query.toLowerCase())) {
+                    // This is a match! Add the highlight class
+                    card.classList.add('highlighted');
+                    
+                    // If this is the first match we've found, save it
+                    if (!firstMatch) {
+                        firstMatch = card;
+                    }
+                }
+            });
+
+            // After checking all cards, scroll to the first match
+            if (firstMatch) {
+                // Scroll the first matching card into the middle of the view
+                firstMatch.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            }
+        }
+        // --- End of Highlighting Logic ---
+
+
+        // 3. Smooth scroll for "Shop Now" and "Contact Us" links
+        document.querySelectorAll('.scroll-link').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault(); 
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - document.querySelector('.navbar').offsetHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 4. Scroll Animation Logic (Unchanged)
+        const observerOptions = {
+            root: null, 
+            rootMargin: '0px',
+            threshold: 0.1 
+        };
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                } else {
+                    entry.target.classList.remove('show');
+                }
+            });
+        };
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
+        elementsToAnimate.forEach(el => observer.observe(el));
+    });
+    </script>
+</body>
+</html>

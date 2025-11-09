@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Consumer Signup</title>
+  <link rel="stylesheet" href="form.css">
+  <link rel ="shortcut icon" href="shortcut.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <form class="signup-form" id="consumerSignupForm">
+    <h2>Consumer Signup</h2>
+    <input type="text" placeholder="Full Name" required />
+    <input type="email" placeholder="Email Address" required />
+    <input type="tel" placeholder="Contact Number" required />
+    <input type="password" placeholder="Password" required />
+    <input type="password" placeholder="Confirm Password" required />
+    
+    <button type="submit">Sign Up</button>
+
+    <p class="redirect">Already have an account? <a href="consumer_login.html">Login here</a></p>
+  </form>
+
+  <script>
+    document.getElementById('consumerSignupForm').addEventListener('submit', function(event) {
+      event.preventDefault(); 
+      alert("Signup successful!");
+      window.location.href = "consumer_login.html";
+    });
+  </script>
+</body>
+</html>

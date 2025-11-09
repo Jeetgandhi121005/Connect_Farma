@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+  <meta charset="UTF-8">
+  <title>Farmer Orders</title>
+  <link rel="stylesheet" href="{% static 'consumer_home.css' %}">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; }
+    .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .data-table th, .data-table td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    .data-table th { background: green; color: #fff; }
+    h2 { padding: 20px 20px 0 20px; }
+    
+    /* Style for the checkbox cell */
+    .data-table td.checkbox-cell {
+        text-align: center;
+        vertical-align: middle;
+    }
+    .data-table input[type="checkbox"] {
+        transform: scale(1.5);
+        cursor: pointer;
+    }
+    .data-table input[type="checkbox"]:disabled {
+        cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+      <div class="logo-container">
+          <img src="{% static 'intro.png' %}" alt="ConnectFrama Logo" class="nav-logo">
+          <span class="logo">Farmer Connect</span>
+      </div>
+      <nav class="nav-links">
+          <a href="{% url 'farmer_dashboard' %}">Dashboard</a>
+          <a href="{% url 'farmer_products' %}">My Products</a>
+          <a href="{% url 'farmer_orders' %}" style="font-weight: bold;">Orders</a>
+          <a href="{% url 'farmer_payments' %}">Payments</a>
+          <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+      </nav>
+  </header>
+
+  {% if messages %}
+    <div style="padding: 15px; background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; text-align: center; font-weight: bold;">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+  {% endif %}
+
+  <h2>Orders Received</h2>
+  <table class="data-table">
+    <tr>
+      <th>Order ID</th>
+      <th>Order Date</th>
+      <th>Customer</th>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Total Price</th>
+      <th>Status</th>
+      
+      <th>Mark as Completed</th>
+    </tr>
+    <tbody id="orderTable">
+        {% for item in order_items %}
+          <tr>
+            <td>{{ item.order.id }}</td>
+            <td>{{ item.order.order_date|date:"d M Y" }}</td>
+            <td>{{ item.order.full_name }}</td>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }} {{ item.product.unit }}</td>
+            <td>₹{{ item.price|floatformat:2 }}</td>
+            <td>
+                {% if item.order.is_delivered %}
+                    <span style="color: green; font-weight: bold;">Completed</span>
+                {% else %}
+                    <span style="color: #e6b800; font-weight: bold;">Pending</span>
+                {% endif %}
+            </td>
+
+            <td class="checkbox-cell">
+                {% if item.order.is_delivered %}
+                    <input type="checkbox" checked disabled>
+                {% else %}
+                    <form action="{% url 'complete_order' item.order.id %}" method="POST" style="margin: 0;">
+                        {% csrf_token %}
+                        <input type="checkbox" onchange="this.form.submit()" title="Click to mark order {{ item.order.id }} as completed">
+                    </form>
+                {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+            <tr>
+                <td colspan="8" style="text-align: center; padding: 30px;">You have not received any orders yet.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  </body>
+</html>

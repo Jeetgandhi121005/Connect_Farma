@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Reviews - ConnectFrama</title>
+    
+    <link rel="stylesheet" href="{% static 'consumer_home.css' %}">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* All your CSS styles are correct and go here */
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: #f7fff7;
+        }
+        .reviews-container {
+            padding: 70px 70px; 
+            max-width: 1200px; 
+            margin: 60px auto 100px auto; 
+            background-color: #ffffff;
+            border-radius: 18px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        .reviews-container h1 {
+            font-size: 3.8em; 
+            color: #4CAF50; 
+            text-align: center; 
+            margin-bottom: 50px; 
+            border-bottom: 4px solid #AEEA00;
+            padding-bottom: 12px;
+            font-weight: 700;
+        }
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 35px;
+        }
+        .review-card {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px; 
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+            border: 1px solid #f0f0f0; 
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .review-card:hover {
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); 
+        }
+        .rating {
+            font-size: 1.5em;
+            color: #FFC107;
+            margin-bottom: 15px;
+        }
+        .review-card p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            color: #444;
+            margin-bottom: 20px;
+        }
+        .customer-name {
+            font-weight: 700;
+            color: #388E3C;
+            font-style: italic;
+            margin-top: 10px;
+        }
+        .reviews-tagline {
+            text-align: center; 
+            margin-top: 60px; 
+            font-size: 1.3em; 
+            font-style: italic; 
+            font-weight: bold; 
+            color: #4CAF50; 
+            border-top: 2px solid #e0ffe0; 
+            padding-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="{% static 'intro.png' %}" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">ConnectFrama</span>
+        </div>
+        <nav class="nav-links">
+            <a href="{% url 'consumer_home' %}">Home</a>
+            <a href="{% url 'about_us' %}">About Us</a> 
+            <a href="{% url 'cart_view' %}">Cart</a>
+            <a href="{% url 'consumer_home' %}#contact-us-section">Contact Us</a> 
+            <a href="{% url 'reviews' %}" style="font-weight: bold;">Reviews</a> 
+            <a href="{% url 'logout' %}">Logout</a>
+        </nav>
+    </header>
+
+    <div class="reviews-container">
+        <h1>Customer Love: Hear It From Them</h1>
+
+        <div class="reviews-grid">
+            
+            <div class="review-card">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p>"The quality is unmatched! The vegetables arrive so fresh, it feels like they were just picked. ConnectFrama is a game-changer for my kitchen."</p>
+                <p class="customer-name">— Riya Sharma, Ahmedabad</p>
+            </div>
+
+            <div class="review-card">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p>"I love supporting local farmers directly. The transparency and freshness make the slightly premium price totally worth it. Highly recommend!"</p>
+                <p class="customer-name">— Dev Rawal, Ahmedabad</p>
+            </div>
+
+            <div class="review-card">
+                <div class="rating">⭐⭐⭐⭐</div>
+                <p>"Excellent service and delivery. Sometimes delivery is a little delayed, but the produce quality always makes up for it. Keep up the great work!"</p>
+                <p class="customer-name">— Meera Vohra, Sabarmati</p>
+            </div>
+
+            <div class="review-card">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p>"Freshness is guaranteed every single time. My family instantly noticed the difference in taste. ConnectFrama has earned a loyal customer."</p>
+                <p class="customer-name">— Zoya Khan, Gandhinagar</p>
+            </div>
+
+            <div class="review-card">
+                <div class="rating">⭐⭐⭐⭐</div>
+                <p>"Their packaging is superb, absolutely plastic-free, which aligns with my values. A truly ethical and quality-focused platform."</p>
+                <p class="customer-name">— Jeet Gandhi , Paldi
+                </p>
+            </div>
+
+            <div class="review-card">
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p>"From ordering to delivery, the experience is seamless. The quality of fruits and vegetables is consistently the best in the market."</p>
+                <p class="customer-name">— Saiyam Shah, Ambavadi</p>
+            </div>
+
+        </div>
+        <p class="reviews-tagline">"Connecting you directly to purity and freshness."</p>
+    </div>
+
+    <footer class="footer">
+        © 2025 ConnectFrama. All rights reserved.
+    </footer>
+    
+    </body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Checkout</title>
+    <link rel="icon" href="intro.png" type="image/png">
+    <link rel="stylesheet" href="consumer_home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- General Layout & Font (Unchanged) --- */
+        body { font-family: 'Roboto Slab', serif; background-color: #f0f0f0; }
+
+        .new-checkout-wrapper {
+            width: 90%;
+            max-width: 800px; 
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- Section Heading (Unchanged) --- */
+        .checkout-section h2 {
+            font-family: 'Roboto Slab', serif;
+            color: #38761d;
+            border-bottom: 3px solid #6aa84f;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        /* --- Form Elements (Unchanged) --- */
+        .form-row { margin-bottom: 20px; }
+        .form-row label { display: block; margin-bottom: 8px; font-weight: 700; color: #555; }
+        .form-row input, .form-row textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        
+        /* UPI PIN row ko chhota rakhenge (Unchanged) */
+        #upi-pin-row {
+            max-width: 200px; 
+        }
+
+        /* --- Payment Options (Unchanged) --- */
+        .payment-option-box { 
+            padding: 15px; 
+            border: 1px solid #ccc; 
+            border-radius: 6px; 
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .payment-option-box:hover { background-color: #e9f5e9; border-color: #4CAF50; }
+        .payment-option-box input[type="radio"] { width: auto; margin-right: 15px; }
+
+        /* --- New: Sub-Form for Payment Details (Unchanged) --- */
+        .payment-sub-fields {
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+            margin-top: 15px;
+            display: none; 
+        }
+        .card-details-row {
+            display: flex;
+            gap: 20px;
+        }
+        .card-details-row > div {
+            flex: 1;
+        }
+        
+        /* --- Button Styling (Unchanged) --- */
+        #final-order-button {
+            width: 100%;
+            padding: 18px;
+            background-color: #f00; 
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+        
+        #final-order-button:hover { background-color: #cc0000; }
+
+        /* --- Centered Modal Styles (Unchanged) --- */
+        .modal-overlay {
+            display: none; 
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7); 
+            justify-content: center; 
+            align-items: center; 
+            backdrop-filter: blur(2px); 
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            width: 90%;
+            max-width: 550px; 
+            text-align: center;
+            animation: fadeIn 0.3s ease-out; 
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        #modal-details-output-new { 
+            white-space: pre-line; 
+            text-align: left;
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            font-size: 1.1em;
+        }
+        .modal-buttons button { 
+            margin: 10px; 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        #modal-cancel { background-color: #e0e0e0; color: #333; }
+        #modal-confirm { background-color: #4CAF50; color: white; }
+        #modal-cancel:hover { background-color: #ccc; }
+        #modal-confirm:hover { background-color: #388e3c; }
+
+        /* --- NEW: Modal Footer Style --- */
+        #modal-footer-note {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            color: #38761d;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="intro.png" alt="ConnectFrama Logo" class="nav-logo">
+            <span class="logo">ConnectFrama</span>
+        </div>
+        <nav class="nav-links">
+            <a href="consumer_home.html">Home</a>
+            <a href="about_us.html">About Us</a>
+            <a href="cart.html">Cart</a>
+            <a href="#">Reviews</a>
+            <a href="index.html">Logout</a>
+        </nav>
+    </header>
+
+    <div class="new-checkout-wrapper">
+        
+        <div class="checkout-section delivery-details">
+            <h2>1. Delivery Address</h2>
+            <form id="delivery-address-form">
+                <div class="form-row">
+                    <label for="user-full-name">Full Name</label>
+                    <input type="text" id="user-full-name" required>
+                </div>
+                <div class="form-row">
+                    <label for="user-mobile">Mobile Number</label>
+                    <input type="tel" id="user-mobile" required pattern="[0-9]{10}" placeholder="10 digit number">
+                </div>
+                <div class="form-row">
+                    <label for="user-address">Full Address (House No, Street, Landmark)</label>
+                    <textarea id="user-address" rows="4" required></textarea>
+                </div>
+                <div class="form-row">
+                    <label for="user-pincode">Pincode</label>
+                    <input type="text" id="user-pincode" required pattern="[0-9]{6}" placeholder="6 digit pincode">
+                </div>
+            </form>
+        </div>
+
+        <div class="checkout-section payment-section">
+            <h2>2. Payment Method</h2>
+            
+            <form id="payment-method-form">
+                <div class="payment-option-box" data-method="cod">
+                    <label>
+                        <input type="radio" name="payment-method-new" value="Cash On Delivery" checked>
+                        Cash On Delivery (COD)
+                    </label>
+                </div>
+                
+                <div class="payment-option-box" data-method="upi">
+                    <label>
+                        <input type="radio" name="payment-method-new" value="UPI">
+                        UPI / GPay / PhonePe (Simulated)
+                    </label>
+                    <div id="upi-fields" class="payment-sub-fields">
+                        <div class="form-row">
+                            <label for="upi-id">Enter UPI ID</label>
+                            <input type="text" id="upi-id" placeholder="example@bankname">
+                        </div>
+                        <div class="form-row" id="upi-pin-row">
+                            <label for="upi-pin">Enter 4-digit PIN</label>
+                            <input type="password" id="upi-pin" placeholder="XXXX" pattern="[0-9]{4}" maxlength="4">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="payment-option-box" data-method="card">
+                    <label>
+                        <input type="radio" name="payment-method-new" value="Card">
+                        Credit / Debit Card (Simulated)
+                    </label>
+                    <div id="card-fields" class="payment-sub-fields">
+                        <div class="form-row">
+                            <label for="card-number">Card Number</label>
+                            <input type="text" id="card-number" placeholder="XXXX XXXX XXXX XXXX" pattern="[0-9]{16}" maxlength="16">
+                        </div>
+                        <div class="card-details-row">
+                            <div>
+                                <label for="card-expiry">Expiry (MM/YY)</label>
+                                <input type="text" id="card-expiry" placeholder="MM/YY" pattern="(?:0[1-9]|1[0-2])/[0-9]{2}" maxlength="5">
+                            </div>
+                            <div>
+                                <label for="card-cvv">CVV</label>
+                                <input type="password" id="card-cvv" placeholder="XXX" pattern="[0-9]{3}" maxlength="3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <button id="final-order-button">PLACE ORDER</button>
+    </div>
+
+    <footer class="footer">
+        © 2025 ConnectFrama. All rights reserved.
+    </footer>
+    
+    <div id="centered-confirmation-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Final Confirmation</h3>
+            <div id="modal-details-output-new"></div>
+            <div class="modal-buttons">
+                <button id="modal-cancel">Cancel</button>
+                <button id="modal-confirm">Confirm & Pay</button>
+            </div>
+            <div id="modal-footer-note">
+                Thank you for shopping with ConnectFrama! Have a Nice Day ✨
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 1. Get Cart Data 
+            const cartItems = JSON.parse(localStorage.getItem('connectFramaCart')) || [];
+            
+            // 2. Element References
+            const finalOrderBtn = document.getElementById('final-order-button');
+            const confirmationModal = document.getElementById('centered-confirmation-modal');
+            const modalDetailsOutput = document.getElementById('modal-details-output-new');
+            const modalConfirm = document.getElementById('modal-confirm');
+            const modalCancel = document.getElementById('modal-cancel');
+            
+            const upiFields = document.getElementById('upi-fields');
+            const cardFields = document.getElementById('card-fields');
+
+            const DELIVERY_FEE = 30.00; 
+            
+            // Check if cart is empty immediately
+            if (cartItems.length === 0) {
+                finalOrderBtn.disabled = true;
+                finalOrderBtn.textContent = 'CART IS EMPTY';
+            }
+
+            // Function to calculate totals (Needed to save data for bill)
+            function calculateTotals() {
+                let subtotal = 0;
+                cartItems.forEach(item => {
+                    const itemPrice = parseFloat(item.price) || 0;
+                    const itemQuantity = Number(item.quantity) || 0;
+                    subtotal += itemPrice * itemQuantity; 
+                });
+                const grandTotal = subtotal + DELIVERY_FEE;
+                
+                return {
+                    subtotal: `₹${subtotal.toFixed(2)}`,
+                    delivery: `₹${DELIVERY_FEE.toFixed(2)}`,
+                    finalTotal: `₹${grandTotal.toFixed(2)}`
+                };
+            }
+            
+            // --- Payment Method Toggle Logic (Unchanged) ---
+            document.querySelectorAll('input[name="payment-method-new"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // Hide all fields first
+                    upiFields.style.display = 'none';
+                    cardFields.style.display = 'none';
+
+                    // Show fields based on selection
+                    if (this.value === 'UPI') {
+                        upiFields.style.display = 'block';
+                    } else if (this.value === 'Card') {
+                        cardFields.style.display = 'block';
+                    }
+                });
+            });
+
+            // --- Place Order Button Click (Show Pop-up) (Unchanged) ---
+            finalOrderBtn.addEventListener('click', function(event) {
+                event.preventDefault();
+
+                if (cartItems.length === 0 || finalOrderBtn.disabled) {
+                    alert("Your cart is empty. Please add items.");
+                    return;
+                }
+                
+                // 1. Address Form Validation 
+                const addressForm = document.getElementById('delivery-address-form');
+                if (!addressForm.checkValidity()) {
+                    addressForm.reportValidity(); 
+                    return;
+                }
+                
+                // 2. Get Form Data
+                const fullName = document.getElementById('user-full-name').value.trim();
+                const pincode = document.getElementById('user-pincode').value.trim();
+                const paymentMethod = document.querySelector('input[name="payment-method-new"]:checked').value;
+                const calculatedTotals = calculateTotals();
+                
+                let paymentDetails = '';
+                
+                // 3. Check if payment fields are filled 
+                if (paymentMethod === 'UPI') {
+                    const upiId = document.getElementById('upi-id').value.trim();
+                    const upiPin = document.getElementById('upi-pin').value.trim();
+                    
+                    if (!upiId) {
+                        alert("Please enter a UPI ID.");
+                        return;
+                    }
+                    if (upiPin.length !== 4 || isNaN(upiPin)) {
+                        alert("Please enter a valid 4-digit UPI PIN.");
+                        return;
+                    }
+                    paymentDetails = `Payment Info: UPI ID: ${upiId}`;
+                } else if (paymentMethod === 'Card') {
+                    const cardNumber = document.getElementById('card-number').value.trim();
+                    const cardCVV = document.getElementById('card-cvv').value.trim();
+
+                    if (cardNumber.length !== 16) {
+                        alert("Please enter a valid 16-digit Card Number.");
+                        return;
+                    }
+                    if (cardCVV.length !== 3) {
+                        alert("Please enter a valid 3-digit CVV.");
+                        return;
+                    }
+
+                    paymentDetails = `Payment Info: Card ending in: ${cardNumber.slice(-4)}`;
+                }
+
+                // 4. Prepare Pop-up Message 
+                const confirmMsg = `
+Delivering to: ${fullName}, Pincode ${pincode}
+Payment Method: ${paymentMethod}
+${paymentDetails ? paymentDetails : ''}
+-----------------------------------
+Items Subtotal: ${calculatedTotals.subtotal}
+Delivery Fee: ${calculatedTotals.delivery}
+Total Payable: ${calculatedTotals.finalTotal}
+
+Confirm placing the order?
+                `;
+                
+                modalDetailsOutput.textContent = confirmMsg.trim(); // Trim extra whitespace
+                confirmationModal.classList.add('active'); // Show centered modal
+            });
+
+            // --- Modal Confirm (OK) (ALERT REMOVED) ---
+            modalConfirm.addEventListener('click', function() {
+                confirmationModal.classList.remove('active');
+                
+                // Re-calculate and store final data right before saving
+                const calculatedTotals = calculateTotals();
+                const fullName = document.getElementById('user-full-name').value.trim();
+                const mobileNumber = document.getElementById('user-mobile').value.trim();
+                const address = document.getElementById('user-address').value.trim();
+                const pincode = document.getElementById('user-pincode').value.trim();
+                const paymentMethod = document.querySelector('input[name="payment-method-new"]:checked').value;
+
+                const finalOrderData = { 
+                    fullName, mobileNumber, address, pincode, paymentMethod, 
+                    ...calculatedTotals, // Include totals here
+                    orderId: 'CFM-' + Date.now().toString().slice(-6) + Math.random().toString(36).substring(2, 5).toUpperCase()
+                };
+
+                // Save final data and cart state to temporary storage
+                localStorage.setItem('finalOrderData', JSON.stringify(finalOrderData));
+                localStorage.setItem('finalCartItems', JSON.stringify(cartItems));
+                
+                // Clear the actual shopping cart
+                localStorage.removeItem('connectFramaCart');
+                
+                // Direct Redirect to the Invoice Page (without the previous alert)
+                window.location.href = 'order_confirmation.html'; 
+            });
+
+            // --- Modal Cancel (Unchanged) ---
+            modalCancel.addEventListener('click', function() {
+                confirmationModal.classList.remove('active');
+            });
+
+            // If cart is not empty, ensure the button shows "PLACE ORDER"
+            if (cartItems.length > 0) {
+                finalOrderBtn.textContent = 'PLACE ORDER';
+            }
+        }); 
+    </script>
+</body>
+</html>
